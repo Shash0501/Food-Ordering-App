@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/pages/add_item_page.dart';
+import 'package:food_ordering_app/features/admin/menu/presentation/widgets/menu_item.dart';
+
+import '../bloc/menu_bloc.dart';
 
 class MenuPage extends StatefulWidget {
   String restaurantId;
@@ -13,6 +17,13 @@ class _MenuPageState extends State<MenuPage> {
   final items = ["Appetizers", "Deserts", "Main courses", "Starters"];
   String category = "Main courses";
   bool veg = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    BlocProvider.of<MenuBloc>(context)
+        .add(LoadMenu(restaurantId: widget.restaurantId));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +31,7 @@ class _MenuPageState extends State<MenuPage> {
       body: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -43,29 +54,56 @@ class _MenuPageState extends State<MenuPage> {
                   ),
                 ),
               ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text((veg) ? "Veg" : "Non-Veg"),
-                      Switch(
-                        activeColor: Colors.green,
-                        inactiveThumbColor: Colors.red,
-                        inactiveTrackColor: Colors.red,
-                        value: veg,
-                        onChanged: (value) {
-                          setState(() {
-                            veg = !veg;
-                          });
-                        },
-                      )
-                    ],
+              Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.black, width: 4),
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Switch(
+                          activeColor: Colors.green,
+                          inactiveThumbColor: Colors.red,
+                          inactiveTrackColor: Colors.red,
+                          value: veg,
+                          onChanged: (value) {
+                            setState(() {
+                              veg = !veg;
+                            });
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
+          ),
+          BlocBuilder<MenuBloc, MenuState>(
+            builder: (context, state) {
+              if (state is MenuLoaded) {
+                return Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.menuItems.length,
+                      itemBuilder: (context, index) {
+                        var item = state.menuItems[index];
+                        return MenuItemCard(
+                            category: item.category,
+                            price: item.price,
+                            itemName: item.itemName,
+                            isVeg: item.isVeg,
+                            isAvailable: item.isAvailable);
+                      }),
+                );
+              }
+              return Container();
+            },
           )
         ],
       ),

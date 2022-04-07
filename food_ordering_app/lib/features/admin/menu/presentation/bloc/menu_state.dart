@@ -10,3 +10,23 @@ abstract class MenuState extends Equatable {
 class MenuInitial extends MenuState {}
 
 class ItemAdded extends MenuState {}
+
+class Loading extends MenuState {}
+
+class Error extends MenuEvent {
+  final String message;
+
+  Error({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class MenuLoaded extends MenuState {
+  final List<MenuItem> menuItems;
+
+  MenuLoaded({required this.menuItems});
+
+  @override
+  List<Object> get props => [menuItems];
+}

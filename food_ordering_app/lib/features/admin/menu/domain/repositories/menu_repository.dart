@@ -1,8 +1,19 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/error/failures.dart';
+import '../../data/models/menuitem_model.dart';
 
 abstract class MenuRepository {
+  Future<Either<Failure, List<MenuItemModel>>> getMenu(String restaurantId);
+  Future<Either<Failure, bool>> addItem(
+      String restaurantId,
+      String itemName,
+      String category,
+      int price,
+      bool isVeg,
+      bool isAvailable,
+      String description,
+      String itemId);
   // Future<Either<Failure, List<Article>>> fetchCategoryArticles({
   //   required int page,
   //   required int categoryId,

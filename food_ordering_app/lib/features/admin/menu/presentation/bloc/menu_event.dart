@@ -14,6 +14,8 @@ class AddItem extends MenuEvent {
   final bool isVeg;
   final bool isAvailable;
   final String restaurantId;
+  final String description;
+  final String itemId;
 
   AddItem(
       {required this.itemName,
@@ -21,9 +23,28 @@ class AddItem extends MenuEvent {
       required this.price,
       required this.isVeg,
       required this.isAvailable,
-      required this.restaurantId});
+      required this.restaurantId,
+      required this.description,
+      required this.itemId});
 
   @override
-  List<Object> get props =>
-      [itemName, category, price, isVeg, isAvailable, restaurantId];
+  List<Object> get props => [
+        itemName,
+        category,
+        price,
+        isVeg,
+        isAvailable,
+        restaurantId,
+        description,
+        itemId
+      ];
+}
+
+class LoadMenu extends MenuEvent {
+  final String restaurantId;
+
+  LoadMenu({required this.restaurantId});
+
+  @override
+  List<Object> get props => [restaurantId];
 }
