@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "721806760266",
+    "project_id": "domato-14f6c",
+    "storage_bucket": "domato-14f6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721806760266:android:2bba3faa9d585716b049b3",
+        "android_client_info": {
+          "package_name": "com.example.food_ordering_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721806760266-i44ligfi6ek4a6nk43t7o7nhnoa060ud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV8V7zyKyk4dGu2t4JewbQBGwUO0Z_Av8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721806760266-i44ligfi6ek4a6nk43t7o7nhnoa060ud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

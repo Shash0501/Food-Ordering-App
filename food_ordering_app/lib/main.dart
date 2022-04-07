@@ -1,6 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/authentication/bloc/sign_in_bloc.dart';
+import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_bloc.dart';
 
-void main() {
+import 'authentication/page/sign_in.dart';
+import 'features/admin/admin_page.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -10,36 +21,80 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SignInBloc>(
+          create: (context) => SignInBloc(),
+        ),
+        BlocProvider<MenuBloc>(create: (context) => MenuBloc()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'CPing',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Error"),
+                );
+              } else if (snapshot.hasData) {
+                return BlocBuilder<SignInBloc, SignInState>(
+                  builder: (context, state) {
+                    if (state is AuthenticationSuccess && state.isAdmin) {
+                      return MyAdminPage(restaurantId: state.restaurantId!);
+                    } else if (state is AuthenticationSuccess) {
+                      return MyHomePage(title: "Asd");
+                    } else {
+                      WidgetsBinding.instance!.addPostFrameCallback((a) {
+                        BlocProvider.of<SignInBloc>(context)
+                            .add(CheckIsAdmin());
+                      });
+                      return const LoadingPage();
+                    }
+                  },
+                );
+                // return BlocBuilder<SignInBloc, SignInState>(
+                //   builder: (context, state) {
+                //     if(state is AuthenticationSuccess && state.){
+
+                //     }
+                //     return MyHomePage(
+                //       title: "hello",
+                //     );
+                //   },
+                // );
+              } else {
+                return const SignInPage();
+              }
+            }),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class LoadingPage extends StatelessWidget {
+  const LoadingPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -52,49 +107,122 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () {
+              BlocProvider.of<SignInBloc>(context).add(AuthenticationLogOut());
+            },
+          ),
+        ],
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            ElevatedButton(
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .collection("admin_list")
+                      .get()
+                      .then((value) {
+                    value.docs.forEach((element) {
+                      if (FirebaseAuth.instance.currentUser?.email ==
+                          element.id) {
+                        print(element.id);
+                      }
+                    });
+                  });
+
+                  // CODE TO CREATE A NEW DOCUMENT WITH THE KEY (email of the user) UNDER THE COLLECTION "CUSTOMERS"
+                  // dynamic doc = FirebaseFirestore.instance
+                  //     .collection("customer")
+                  //     .doc("a123123dasdasdasd");
+
+                  // final json = {
+                  //   "name": FirebaseAuth.instance.currentUser?.displayName,
+                  //   "email":
+                  //       FirebaseAuth.instance.currentUser?.email.toString(),
+                  //   "phone": FirebaseAuth.instance.currentUser?.phoneNumber,
+                  // };
+
+                  // doc.set(json);
+
+                  // // This will help us create collection order under the document of that particular user
+
+                  // final orderJson = {
+                  //   "order": [
+                  //     {
+                  //       "item_id": "item_id",
+                  //       "item": "paneer tikka",
+                  //       "quantity": 1,
+                  //       "price": 200,
+                  //     },
+                  //     {
+                  //       "item_id": "item_id",
+                  //       "item": "chicken tikka",
+                  //       "quantity": 1,
+                  //       "price": 200,
+                  //     },
+                  //   ],
+                  //   "order_date": DateTime.now(),
+                  //   "order_status": "pending",
+                  //   "order_total": 400,
+                  //   "rating_given": 5,
+                  //   "restaurant_id": "1290301923123",
+                  // };
+                  // doc.collection("orders").doc().set(orderJson);
+
+                  // // This will help us to to create a document of the restaurant under the collection "restaurants"
+
+                  // final restaurantJson = {
+                  //   "name": "Pizza Hut",
+                  //   "address": "Sector-12, Noida",
+                  //   "phone": "1234567890",
+                  //   "email": "abc@gmail.com",
+                  //   "rating": 4.5,
+                  //   "rating_count": 10
+                  // };
+                  // dynamic restaurant = FirebaseFirestore.instance
+                  //     .collection("restaurants")
+                  //     .doc();
+                  // await FirebaseFirestore.instance
+                  //     .collection("mujhe nahi malunn")
+                  //     .doc();
+                  // await FirebaseFirestore.instance
+                  //     .collection("mujhe nahi malunn")
+                  //     .doc()
+                  //     .set({"name": "hello"});
+                  // FirebaseFirestore.instance
+                  //     .collection("restaurants")
+                  //     .doc()
+                  //     .collection("menu")
+                  //     .doc("Non-Vegetarian")
+                  //     .collection("deserts")
+                  //     .doc()
+                  //     .set({"name": "Ice Cream", "price": 100});
+                  // // restaurant.collection("menu").doc("Vegetarian");
+                  // FirebaseFirestore.instance.collection("mujhenahi poaat");
+                  // //
+                  // DocumentSnapshot a = await FirebaseFirestore.instance
+                  //     .collection("customer")
+                  //     .doc("TeDvAj211zflK1pF2a65")
+                  //     .collection("details")
+                  //     .doc("WHL3pkzXDbndI3moeGZF")
+                  //     .get();
+                  // print(a.data());
+                  // FirebaseFirestore.instance.doc();
+                },
+                child: Text("press")),
             const Text(
               'You have pushed the button this many times:',
             ),
