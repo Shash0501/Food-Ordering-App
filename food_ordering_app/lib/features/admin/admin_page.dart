@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/pages/menu_page.dart';
 
+import 'order/presentation/pages/order_page.dart';
+
 class MyAdminPage extends StatefulWidget {
   String restaurantId;
   MyAdminPage({Key? key, required this.restaurantId}) : super(key: key);
@@ -33,7 +35,7 @@ class _MyAdminPageState extends State<MyAdminPage> {
           children: [
             MenuPage(restaurantId: widget.restaurantId),
             Icon(Icons.flight, size: 350),
-            Icon(Icons.directions_car, size: 350),
+            OrderPage(restaurantId: widget.restaurantId),
           ],
         ),
       ),

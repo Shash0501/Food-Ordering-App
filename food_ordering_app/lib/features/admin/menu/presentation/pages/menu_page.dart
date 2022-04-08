@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/core/config/constants.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/pages/add_item_page.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/widgets/menu_item.dart';
 
 import '../bloc/menu_bloc.dart';
+import '../widgets/category_list.dart';
 
 class MenuPage extends StatefulWidget {
   String restaurantId;
@@ -15,6 +17,7 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   final items = ["Appetizers", "Deserts", "Main courses", "Starters"];
+  int selected = 0;
   String category = "Main courses";
   bool veg = true;
   @override
@@ -33,55 +36,45 @@ class _MenuPageState extends State<MenuPage> {
           Row(
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black, width: 4),
-                  ),
-                  child: DropdownButton<String>(
-                    elevation: 0,
-                    value: category,
-                    items: items.map(buildMenuItem).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        category = value!;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.black, width: 4),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Switch(
-                          activeColor: Colors.green,
-                          inactiveThumbColor: Colors.red,
-                          inactiveTrackColor: Colors.red,
-                          value: veg,
-                          onChanged: (value) {
-                            setState(() {
-                              veg = !veg;
-                            });
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // CategoryList(
+              //     selected: selected,
+              //     callback: (index) {
+              //       setState(() {
+              //         selected = index;
+              //       });
+              //     }),
+
+              //!! Dead code - can be used later for veg non veg filter
+
+              // Expanded(
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(12),
+              //       border: Border.all(color: Colors.black, width: 4),
+              //     ),
+              //     child: Center(
+              //       child: Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 8),
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: [
+              //             Switch(
+              //               activeColor: Colors.green,
+              //               inactiveThumbColor: Colors.red,
+              //               inactiveTrackColor: Colors.red,
+              //               value: veg,
+              //               onChanged: (value) {
+              //                 setState(() {
+              //                   veg = !veg;
+              //                 });
+              //               },
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           BlocBuilder<MenuBloc, MenuState>(
@@ -127,9 +120,8 @@ class _MenuPageState extends State<MenuPage> {
       ));
 }
 
-
 // Details of an Item
 // Item name
 // Item price
-// IsNonveg 
+// IsNonveg
 // status Available

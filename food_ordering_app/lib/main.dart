@@ -8,6 +8,7 @@ import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_blo
 
 import 'authentication/page/sign_in.dart';
 import 'features/admin/admin_page.dart';
+import 'features/admin/order/presentation/bloc/order_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           create: (context) => SignInBloc(),
         ),
         BlocProvider<MenuBloc>(create: (context) => MenuBloc()),
+        BlocProvider<OrderBloc>(create: (context) => OrderBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
