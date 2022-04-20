@@ -36,7 +36,7 @@ class _AddItemPageState extends State<AddItemPage> {
     return BlocConsumer<MenuBloc, MenuState>(
       listener: (context, state) {
         if (state is ItemAdded) {
-          Navigator.pop(context);
+          Navigator.of(context).pop(true);
         }
       },
       builder: (context, state) {

@@ -86,12 +86,15 @@ class _MenuPageState extends State<MenuPage> {
                       itemCount: state.menuItems.length,
                       itemBuilder: (context, index) {
                         var item = state.menuItems[index];
-                        return MenuItemCard(
-                            category: item.category,
-                            price: item.price,
-                            itemName: item.itemName,
-                            isVeg: item.isVeg,
-                            isAvailable: item.isAvailable);
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: MenuItemCard(
+                              category: item.category,
+                              price: item.price,
+                              itemName: item.itemName,
+                              isVeg: item.isVeg,
+                              isAvailable: item.isAvailable),
+                        );
                       }),
                 );
               }
@@ -101,11 +104,16 @@ class _MenuPageState extends State<MenuPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddItemPage(
-                    restaurantId: widget.restaurantId,
-                  )));
+        onPressed: () async {
+          final bool result =
+              await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AddItemPage(
+                        restaurantId: widget.restaurantId,
+                      )));
+          if (result) {
+            BlocProvider.of<MenuBloc>(context)
+                .add(LoadMenu(restaurantId: widget.restaurantId));
+          }
         },
         child: const Icon(Icons.add),
       ),

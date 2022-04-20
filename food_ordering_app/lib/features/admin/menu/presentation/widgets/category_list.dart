@@ -20,7 +20,7 @@ class CategoryList extends StatelessWidget {
               return GestureDetector(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
                   child: Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(

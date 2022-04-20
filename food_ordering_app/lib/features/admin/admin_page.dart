@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/pages/menu_page.dart';
 
 import 'order/presentation/pages/order_page.dart';
+import 'profile/presentation/pages/profilepage.dart';
 
 class MyAdminPage extends StatefulWidget {
   String restaurantId;
@@ -34,7 +35,7 @@ class _MyAdminPageState extends State<MyAdminPage> {
         body: TabBarView(
           children: [
             MenuPage(restaurantId: widget.restaurantId),
-            Icon(Icons.flight, size: 350),
+            ProfilePage(restaurantId: widget.restaurantId),
             OrderPage(restaurantId: widget.restaurantId),
           ],
         ),

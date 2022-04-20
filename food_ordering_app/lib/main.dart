@@ -9,6 +9,7 @@ import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_blo
 import 'authentication/page/sign_in.dart';
 import 'features/admin/admin_page.dart';
 import 'features/admin/order/presentation/bloc/order_bloc.dart';
+import 'features/admin/profile/presentation/bloc/profile_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,13 +30,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<MenuBloc>(create: (context) => MenuBloc()),
         BlocProvider<OrderBloc>(create: (context) => OrderBloc()),
+        BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'CPing',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData.dark(),
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {

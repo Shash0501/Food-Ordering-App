@@ -39,7 +39,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               await loadMenu(LM.Params(restaurantId: event.restaurantId));
           result.fold(
             (failure) => {print("Failure")},
-            (menuItems) => emit(MenuLoaded(menuItems: menuItems)),
+            (menuItems) {
+              print("The number of items are : ");
+              print(menuItems.length);
+              emit(MenuLoaded(menuItems: menuItems));
+            },
           );
         } catch (e) {
           print(e);

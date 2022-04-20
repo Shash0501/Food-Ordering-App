@@ -6,7 +6,7 @@ class OrderItem extends Equatable {
   String restaurantId;
   DateTime orderDate;
   int totalAmount;
-  int? ratingGiven;
+  double? ratingGiven;
   String status;
   List<Map<String, dynamic>> order;
 

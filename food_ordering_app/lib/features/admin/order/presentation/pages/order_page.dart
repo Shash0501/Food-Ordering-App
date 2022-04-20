@@ -50,6 +50,7 @@ class _OrderPageState extends State<OrderPage> {
               return ListView.builder(
                   itemCount: state.orders.length,
                   itemBuilder: (context, index) {
+                    print(state.orders[index]);
                     return ListTile(
                       title: Text(state.orders[index].orderId),
                       subtitle: Text(state.orders[index].status),

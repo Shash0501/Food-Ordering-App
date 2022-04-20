@@ -17,7 +17,9 @@ class OrderRepositoryImpl implements OrderRepository {
   Future<Either<Failure, List<OrderItemModel>>> getOrders(
       List<String> orderIds) async {
     try {
-      dynamic result = remoteDataSource.getOrders(orderIds);
+      print("Printing the orderIds from repository IMPL");
+      dynamic result = await remoteDataSource.getOrders(orderIds);
+      print(result);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure());

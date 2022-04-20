@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/orderitem.dart';
 
 class OrderItemModel extends OrderItem {
@@ -9,7 +11,7 @@ class OrderItemModel extends OrderItem {
     required String restaurantId,
     required DateTime orderDate,
     required int totalAmount,
-    required int ratingGiven,
+    required double? ratingGiven,
     required String status,
     required List<Map<String, dynamic>> order,
   }) : super(
@@ -23,15 +25,24 @@ class OrderItemModel extends OrderItem {
           order: order,
         );
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
+    print(json['order']);
+    print(json['order'].runtimeType);
+    List<Map<String, dynamic>> order = [];
+    json['order'].forEach((element) {
+      order.add(element);
+    });
+
+    Timestamp a = json["orderDate"];
+
     return OrderItemModel(
       orderId: json['orderId'],
       customerId: json['customerId'],
       restaurantId: json['restaurantId'],
-      orderDate: DateTime.parse(json['orderDate']),
+      orderDate: DateTime.fromMicrosecondsSinceEpoch(a.microsecondsSinceEpoch),
       totalAmount: json['totalAmount'],
       ratingGiven: json['ratingGiven'],
       status: json['status'],
-      order: json['order'],
+      order: order,
     );
   }
 

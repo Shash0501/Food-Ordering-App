@@ -49,6 +49,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     const Icon(Icons.arrow_forward_ios_outlined, size: 15),
@@ -69,12 +70,14 @@ class _MenuItemCardState extends State<MenuItemCard> {
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     Text(
                       widget.price.toString(),
                       style: const TextStyle(
                         fontSize: 18,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
