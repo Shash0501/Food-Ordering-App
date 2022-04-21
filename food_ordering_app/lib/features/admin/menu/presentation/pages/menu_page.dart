@@ -79,7 +79,9 @@ class _MenuPageState extends State<MenuPage> {
           ),
           BlocBuilder<MenuBloc, MenuState>(
             builder: (context, state) {
-              if (state is MenuLoaded) {
+              if (State is Loading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is MenuLoaded) {
                 return Expanded(
                   child: ListView.builder(
                       shrinkWrap: true,

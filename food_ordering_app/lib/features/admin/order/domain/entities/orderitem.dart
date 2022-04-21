@@ -5,10 +5,12 @@ class OrderItem extends Equatable {
   String customerId;
   String restaurantId;
   DateTime orderDate;
-  int totalAmount;
+  double totalAmount;
   double? ratingGiven;
   String status;
   List<Map<String, dynamic>> order;
+  int pincode;
+  String address;
 
   OrderItem(
       {required this.orderId,
@@ -18,7 +20,9 @@ class OrderItem extends Equatable {
       required this.totalAmount,
       required this.ratingGiven,
       required this.status,
-      required this.order});
+      required this.order,
+      required this.pincode,
+      required this.address});
 
   @override
   List<Object> get props => [
@@ -28,6 +32,8 @@ class OrderItem extends Equatable {
         orderDate,
         totalAmount,
         status,
-        order
+        order,
+        pincode,
+        address
       ];
 }

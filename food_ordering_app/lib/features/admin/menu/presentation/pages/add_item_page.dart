@@ -26,8 +26,6 @@ class _AddItemPageState extends State<AddItemPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
-    BlocProvider.of<MenuBloc>(context)
-        .add(LoadMenu(restaurantId: widget.restaurantId));
     super.dispose();
   }
 

@@ -10,10 +10,12 @@ class OrderItemModel extends OrderItem {
     required String customerId,
     required String restaurantId,
     required DateTime orderDate,
-    required int totalAmount,
+    required double totalAmount,
     required double? ratingGiven,
     required String status,
     required List<Map<String, dynamic>> order,
+    required int pincode,
+    required String address,
   }) : super(
           orderId: orderId,
           customerId: customerId,
@@ -23,26 +25,33 @@ class OrderItemModel extends OrderItem {
           ratingGiven: ratingGiven,
           status: status,
           order: order,
+          pincode: pincode,
+          address: address,
         );
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
     print(json['order']);
     print(json['order'].runtimeType);
+
     List<Map<String, dynamic>> order = [];
     json['order'].forEach((element) {
       order.add(element);
     });
 
     Timestamp a = json["orderDate"];
+    print(json['totalAmount'].runtimeType);
+    print(json['ratingGiven'].runtimeType);
 
     return OrderItemModel(
       orderId: json['orderId'],
       customerId: json['customerId'],
       restaurantId: json['restaurantId'],
       orderDate: DateTime.fromMicrosecondsSinceEpoch(a.microsecondsSinceEpoch),
-      totalAmount: json['totalAmount'],
-      ratingGiven: json['ratingGiven'],
+      totalAmount: json['totalAmount'].toDouble(),
+      ratingGiven: json['ratingGiven'].toDouble(),
       status: json['status'],
       order: order,
+      pincode: json['pincode'],
+      address: json['address'],
     );
   }
 
@@ -56,6 +65,8 @@ class OrderItemModel extends OrderItem {
       'ratingGiven': ratingGiven,
       'status': status,
       'order': order,
+      'pincode': pincode,
+      'address': address,
     };
   }
 }

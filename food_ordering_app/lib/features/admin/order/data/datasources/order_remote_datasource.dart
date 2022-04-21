@@ -15,30 +15,16 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
     List<OrderItemModel> orders = [];
     List<OrderItemModel> a = [];
     try {
-      // ignore: avoid_function_literals_in_foreach_calls
-      await FirebaseFirestore.instance.collection("orders").get().then((value) {
-        value.docs.forEach((doc) {
-          if (orderIds.contains(doc.id)) {
-            orders.add(OrderItemModel.fromJson(doc.data()));
-            print(doc.data());
-          }
+      for (var element in orderIds) {
+        await FirebaseFirestore.instance
+            .collection("orders")
+            .doc(element)
+            .get()
+            .then((value) {
+          print(value.data());
+          orders.add(OrderItemModel.fromJson(value.data()!));
         });
-      });
-      // orderIds.forEach((orderId) async {
-      //   a = await FirebaseFirestore.instance
-      //       .collection("orders")
-      //       .get()
-      //       .then((value) {
-      //     value.docs.forEach((doc) {
-      //       if (doc.id == orderId) {
-      //         print("lknasd");
-      //         orders.add(OrderItemModel.fromJson(doc.data()));
-      //       }
-      //     });
-      //     return orders;
-      //   });
-      // });
-      print("Retuening");
+      }
       return orders;
     } catch (e) {
       print(e);

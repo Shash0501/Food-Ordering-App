@@ -39,8 +39,6 @@ class _EditItemPageState extends State<EditItemPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
-    BlocProvider.of<MenuBloc>(context)
-        .add(LoadMenu(restaurantId: widget.restaurantId));
     super.dispose();
   }
 
@@ -48,11 +46,14 @@ class _EditItemPageState extends State<EditItemPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<MenuBloc, MenuState>(
       listener: (context, state) {
-        if (state is ItemAdded) {
-          Navigator.of(context).pop(true);
+        if (state is ItemEdited) {
+          Navigator.of(context).pop();
         }
       },
       builder: (context, state) {
+        if (state is Loading) {
+          return Center(child: CircularProgressIndicator());
+        }
         return Scaffold(
           appBar: AppBar(
             title: const Padding(
@@ -63,13 +64,6 @@ class _EditItemPageState extends State<EditItemPage> {
               InkWell(
                 child: const Text("Edit Item"),
                 onTap: () {
-                  print(itemName.text);
-                  print(itemPrice.text);
-                  print(category);
-                  print(veg);
-                  print(available);
-                  print(uuid);
-
                   BlocProvider.of<MenuBloc>(context).add(EditItem(
                     restaurantId: widget.restaurantId,
                     itemName: itemName.text,
@@ -135,7 +129,7 @@ class _EditItemPageState extends State<EditItemPage> {
                     onChanged: (value) {
                       if (mounted) {
                         setState(() {
-                          category = value!;
+                          category = value ?? category;
                         });
                       }
                     },
@@ -157,7 +151,7 @@ class _EditItemPageState extends State<EditItemPage> {
                           value: veg,
                           onChanged: (value) {
                             setState(() {
-                              veg = !veg;
+                              veg = veg;
                             });
                           },
                         )
@@ -178,7 +172,7 @@ class _EditItemPageState extends State<EditItemPage> {
                             value: available,
                             onChanged: (value) {
                               setState(() {
-                                available = !available;
+                                available = available;
                               });
                             },
                           ),

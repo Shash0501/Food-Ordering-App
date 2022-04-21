@@ -5,6 +5,7 @@ import 'package:food_ordering_app/features/admin/order/data/models/orderitem_mod
 import 'package:googleapis/compute/v1.dart';
 
 import '../bloc/order_bloc.dart';
+import '../widgets/order_card.dart';
 
 class OrderPage extends StatefulWidget {
   String restaurantId;
@@ -18,6 +19,7 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   void initState() {
+    print("Connecting to firebase Stream");
     stream = FirebaseFirestore.instance
         .collection("restaurants")
         .doc(widget.restaurantId)
@@ -25,7 +27,7 @@ class _OrderPageState extends State<OrderPage> {
         .snapshots();
     stream.listen((QuerySnapshot snapshot) {
       List<String> orderIds = snapshot.docs.map((DocumentSnapshot doc) {
-        return doc.id;
+        return doc.id.trim();
       }).toList();
       print(orderIds);
       BlocProvider.of<OrderBloc>(context).add(LoadOrders(orderIds: orderIds));
@@ -46,16 +48,10 @@ class _OrderPageState extends State<OrderPage> {
         body: BlocBuilder<OrderBloc, OrderState>(
           builder: (context, state) {
             if (state is OrdersLoaded) {
-              print(state.orders.length);
               return ListView.builder(
                   itemCount: state.orders.length,
                   itemBuilder: (context, index) {
-                    print(state.orders[index]);
-                    return ListTile(
-                      title: Text(state.orders[index].orderId),
-                      subtitle: Text(state.orders[index].status),
-                      onTap: () {},
-                    );
+                    return OrderCard(order: state.orders[index]);
                   });
             }
             return Container();
