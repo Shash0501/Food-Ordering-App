@@ -53,4 +53,32 @@ class MenuRepositoryImpl implements MenuRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> editItem(
+      String restaurantId,
+      String itemName,
+      String category,
+      int price,
+      bool isVeg,
+      bool isAvailable,
+      String description,
+      String itemId) async {
+    try {
+      final result = await remoteDataSource.editItem(
+        restaurantId,
+        itemName,
+        category,
+        price,
+        isVeg,
+        isAvailable,
+        description,
+        itemId,
+      );
+      return Right(result);
+    } catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    }
+  }
 }

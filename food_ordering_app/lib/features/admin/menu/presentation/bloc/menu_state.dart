@@ -11,6 +11,8 @@ class MenuInitial extends MenuState {}
 
 class ItemAdded extends MenuState {}
 
+class ItemEdited extends MenuState {}
+
 class Loading extends MenuState {}
 
 class Error extends MenuEvent {

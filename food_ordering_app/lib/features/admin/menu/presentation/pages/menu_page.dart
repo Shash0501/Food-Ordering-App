@@ -89,6 +89,8 @@ class _MenuPageState extends State<MenuPage> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: MenuItemCard(
+                              restaurantId: widget.restaurantId,
+                              itemId: item.itemId,
                               category: item.category,
                               price: item.price,
                               itemName: item.itemName,

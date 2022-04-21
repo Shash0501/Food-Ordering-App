@@ -13,6 +13,15 @@ abstract class MenuRemoteDataSource {
       String description,
       String itemId);
   Future<dynamic> getMenu(String restaurantId);
+  Future<bool> editItem(
+      String restaurantId,
+      String itemName,
+      String category,
+      int price,
+      bool isVeg,
+      bool isAvailable,
+      String description,
+      String itemId);
 }
 
 class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
@@ -80,6 +89,43 @@ class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
     } catch (e) {
       print(e);
       throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> editItem(
+      String restaurantId,
+      String itemName,
+      String category,
+      int price,
+      bool isVeg,
+      bool isAvailable,
+      String description,
+      String itemId) async {
+    MenuItemModel menuItemModel = MenuItemModel(
+      itemName: itemName,
+      category: category,
+      price: price,
+      isVeg: isVeg,
+      isAvailable: isAvailable,
+      description: description,
+      itemId: itemId,
+    );
+    Map<String, dynamic> itemJson = (menuItemModel.toJson());
+    String isveg = isVeg ? 'Vegetarian' : 'Non-Vegetarian';
+    print(itemId);
+    try {
+      await FirebaseFirestore.instance
+          .collection("restaurants")
+          .doc(restaurantId)
+          .collection("menu")
+          .doc(itemId)
+          .set(itemJson);
+      print("Item edited");
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/features/admin/menu/presentation/pages/edit_item_page.dart';
 
 class MenuItemCard extends StatefulWidget {
+  final String restaurantId;
+  final String itemId;
   final String itemName;
   final String category;
   final int price;
   final bool isVeg;
   final bool isAvailable;
   MenuItemCard(
-      {required this.itemName,
+      {required this.restaurantId,
+      required this.itemId,
+      required this.itemName,
       required this.category,
       required this.price,
       required this.isVeg,
@@ -28,16 +33,20 @@ class _MenuItemCardState extends State<MenuItemCard> {
       ),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(5),
-            width: 110,
-            height: 110,
-            child:
-                Image.asset('assets/images/chicken.jpg', fit: BoxFit.fitHeight),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(5),
+                width: 110,
+                height: 110,
+                child: Image.asset('assets/images/chicken.jpg',
+                    fit: BoxFit.fitHeight),
+              ),
+            ],
           ),
           Expanded(
               child: Container(
-            padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            padding: const EdgeInsets.only(top: 10, left: 8, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -85,7 +94,27 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 )
               ],
             ),
-          ))
+          )),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EditItemPage(
+                            restaurantId: widget.restaurantId,
+                            itemId: widget.itemId,
+                            itemName: widget.itemName,
+                            itemPrice: widget.price,
+                            itemCategory: widget.category,
+                            isVeg: widget.isVeg,
+                            isAvailable: widget.isAvailable)));
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  )),
+            ],
+          )
         ],
       ),
     );

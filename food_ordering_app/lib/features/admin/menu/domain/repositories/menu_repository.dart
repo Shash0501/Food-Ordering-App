@@ -14,6 +14,16 @@ abstract class MenuRepository {
       bool isAvailable,
       String description,
       String itemId);
+  Future<Either<Failure, bool>> editItem(
+      String restaurantId,
+      String itemName,
+      String category,
+      int price,
+      bool isVeg,
+      bool isAvailable,
+      String description,
+      String itemId);
+
   // Future<Either<Failure, List<Article>>> fetchCategoryArticles({
   //   required int page,
   //   required int categoryId,
