@@ -10,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'authentication/page/sign_in.dart';
 import 'cache/ids.dart';
+import 'cache/order.dart';
 import 'features/admin/admin_page.dart';
 import 'features/admin/order/presentation/bloc/order_bloc.dart';
 import 'features/admin/profile/presentation/bloc/profile_bloc.dart';
@@ -21,7 +22,9 @@ Future main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   Hive.registerAdapter(IdAdapter());
+  Hive.registerAdapter(CurrentOrderAdapter());
   await Hive.openBox<Id>('restaurantIds');
+  await Hive.openBox<CurrentOrder>('currentOrder');
   runApp(const MyApp());
 }
 

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:hive_flutter/adapters.dart';
+
 import '../../domain/entities/menuitem.dart';
 
 class MenuItemModel extends MenuItem {

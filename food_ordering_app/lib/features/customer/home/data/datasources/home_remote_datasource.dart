@@ -50,7 +50,6 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
             // ?? Here I have omitted the condition for category
             // ?? This will return all the items of all the restaurants
             if (element1.data().isNotEmpty) {
-              print(element1.data());
               orders.add(MenuItemModel.fromJson(element1.data(), element));
             }
           });
