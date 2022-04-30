@@ -40,6 +40,7 @@ class _AddItemPageState extends State<AddItemPage> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.redAccent,
             title: const Text("Add Item"),
             actions: [
               InkWell(
@@ -117,11 +118,11 @@ class _AddItemPageState extends State<AddItemPage> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 140),
+                  padding: const EdgeInsets.symmetric(horizontal: 130.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text((veg) ? "Veg" : "Non-Veg"),
+                      Expanded(child: Text((veg) ? "Veg" : "Non-Veg")),
                       Switch(
                         activeColor: Colors.green,
                         inactiveThumbColor: Colors.red,
@@ -139,11 +140,13 @@ class _AddItemPageState extends State<AddItemPage> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 140),
+                  padding: const EdgeInsets.symmetric(horizontal: 130),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text((available) ? "Available" : "Unavailable"),
+                      Expanded(
+                          child:
+                              Text((available) ? "Available" : "Unavailable")),
                       Switch(
                         activeColor: Colors.green,
                         inactiveThumbColor: Colors.red,

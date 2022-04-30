@@ -61,7 +61,6 @@ class _MenuItemCardState extends State<MenuItemCard> {
                         color: Colors.black,
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios_outlined, size: 15),
                   ],
                 ),
                 // TODO add description
