@@ -105,7 +105,9 @@ class _SingleOrderPageState extends State<SingleOrderPage> {
                                   ["quantity"],
                             );
                           }),
-                      OrderSummary(orderItems: widget.orderItem.order),
+                      OrderSummary(
+                          orderItems: widget.orderItem.order,
+                          itemdetails: state.order),
                       OrderDetails(
                         orderItem: widget.orderItem,
                       )
@@ -172,8 +174,6 @@ class OrderItem extends StatelessWidget {
                     width: 23,
                     height: 23,
                     child: DecoratedBox(
-                      // TODO chaneg this
-
                       child: Center(child: Text("${quantity}")),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
@@ -197,8 +197,6 @@ class OrderItem extends StatelessWidget {
                 ],
               ),
             ),
-            // TODO chaneg this
-
             Text('₹${quantity * item.price}')
           ]),
           const Divider(
@@ -213,7 +211,10 @@ class OrderItem extends StatelessWidget {
 
 class OrderSummary extends StatelessWidget {
   final dynamic orderItems;
-  const OrderSummary({Key? key, required this.orderItems}) : super(key: key);
+  final List<MenuItemModel> itemdetails;
+  const OrderSummary(
+      {Key? key, required this.orderItems, required this.itemdetails})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -306,9 +307,10 @@ class OrderSummary extends StatelessWidget {
 
   double calculateTotal() {
     double itemTotal = 0;
-    orderItems.forEach((e) {
-      itemTotal += e['quantity'] * e['price'];
-    });
+    for (int i = 0; i < orderItems.length; i++) {
+      itemTotal += orderItems[i]["quantity"] * itemdetails[i].price;
+    }
+
     return itemTotal;
   }
 }
