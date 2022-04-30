@@ -16,19 +16,26 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController A = TextEditingController();
   Widget textfield({required hintText}) {
-    return TextFormField(
-      controller: A,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(
-            letterSpacing: 2,
-            color: Colors.black54,
-            fontWeight: FontWeight.bold),
-        fillColor: Colors.white30,
-        // filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+    return Material(
+      elevation: 4,
+      shadowColor: Colors.grey,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: TextField(
+        controller: A,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+              letterSpacing: 2,
+              color: Colors.black54,
+              fontWeight: FontWeight.bold),
+          fillColor: Colors.white10,
+          // filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );

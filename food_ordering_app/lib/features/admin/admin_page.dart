@@ -34,8 +34,8 @@ class _MyAdminPageState extends State<MyAdminPage> {
         ),
         body: TabBarView(
           children: [
-            ProfilePage(restaurantId: widget.restaurantId),
             OrderPage(restaurantId: widget.restaurantId),
+            ProfilePage(restaurantId: widget.restaurantId),
             MenuPage(restaurantId: widget.restaurantId),
           ],
         ),
