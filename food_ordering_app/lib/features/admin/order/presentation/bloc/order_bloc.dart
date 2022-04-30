@@ -20,7 +20,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         try {
           final result = await getOrders(go.Params(orderIds: event.orderIds));
           result.fold(
-            (failure) => {print("Failure")},
+            (failure) => {print("Failure - 100")},
             (orders) => emit(OrdersLoaded(orders: orders)),
           );
         } catch (e) {
