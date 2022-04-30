@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/pages/menu_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'order/presentation/pages/order_page.dart';
 import 'profile/presentation/pages/profilepage.dart';
@@ -21,6 +23,16 @@ class _MyAdminPageState extends State<MyAdminPage> {
         appBar: AppBar(
           backgroundColor: Colors.redAccent,
           title: const Text("ADMIN"),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                final googleSignIn = GoogleSignIn();
+                await googleSignIn.disconnect();
+                FirebaseAuth.instance.signOut();
+              },
+            ),
+          ],
           bottom: TabBar(tabs: [
             Tab(
               child: Text("Menu"),

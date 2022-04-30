@@ -1,30 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
-class UserHomePage extends StatefulWidget {
-  const UserHomePage({Key? key}) : super(key: key);
+import '../../../../../cache/ids.dart';
+import '../bloc/homepage_bloc.dart';
+
+class CustomerHomePage extends StatefulWidget {
+  const CustomerHomePage({Key? key}) : super(key: key);
 
   @override
-  State<UserHomePage> createState() => _UserHomePageState();
+  State<CustomerHomePage> createState() => _CustomerHomePageState();
 }
 
-class _UserHomePageState extends State<UserHomePage> {
+class _CustomerHomePageState extends State<CustomerHomePage> {
+  @override
+  void initState() {
+    var box = Hive.box<Id>("restaurantIds");
+    BlocProvider.of<HomepageBloc>(context).add(CategoryMenu("deserts"));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('User Home Page'),
+          title: const Text('Customer Home Page'),
         ),
         body: Column(
           children: [
-            ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.blue,
-                  );
-                }),
+            Container(
+              height: 150,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: Center(
+                        child: Text('Restaurant $index'),
+                      ),
+                    );
+                  }),
+            ),
           ],
         ));
   }
