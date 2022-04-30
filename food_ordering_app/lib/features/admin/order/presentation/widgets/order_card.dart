@@ -50,14 +50,20 @@ class _OrderCardState extends State<OrderCard> {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-            child: Row(
-              children: [
-                Expanded(child: Text('ID: ${orderListing.orderId}')),
-                Text(
-                    '${orderListing.orderDate.hour}:${orderListing.orderDate.minute} PM')
-              ],
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleOrderPage(orderItem: orderListing,)));
+            },
+
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+              child: Row(
+                children: [
+                  Expanded(child: Text('ID: ${orderListing.orderId}')),
+                  Text(
+                      '${orderListing.orderDate.hour}:${orderListing.orderDate.minute} PM')
+                ],
+              ),
             ),
           ),
           Row(
