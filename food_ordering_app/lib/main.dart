@@ -5,15 +5,23 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/authentication/bloc/sign_in_bloc.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'authentication/page/sign_in.dart';
+import 'cache/ids.dart';
 import 'features/admin/admin_page.dart';
 import 'features/admin/order/presentation/bloc/order_bloc.dart';
 import 'features/admin/profile/presentation/bloc/profile_bloc.dart';
+import 'features/customer/home/presentation/bloc/homepage_bloc.dart';
+import 'features/customer/home/presentation/pages/home_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
+  Hive.registerAdapter(IdAdapter());
+  await Hive.openBox<Id>('restaurantIds');
   runApp(const MyApp());
 }
 
@@ -31,6 +39,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<MenuBloc>(create: (context) => MenuBloc()),
         BlocProvider<OrderBloc>(create: (context) => OrderBloc()),
         BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
+        BlocProvider<HomepageBloc>(create: (context) => HomepageBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -55,7 +64,7 @@ class MyApp extends StatelessWidget {
                     if (state is AuthenticationSuccess && state.isAdmin) {
                       return MyAdminPage(restaurantId: state.restaurantId!);
                     } else if (state is AuthenticationSuccess) {
-                      return MyHomePage(title: "Asd");
+                      return const CustomerHomePage();
                     } else {
                       WidgetsBinding.instance!.addPostFrameCallback((a) {
                         BlocProvider.of<SignInBloc>(context)
@@ -65,16 +74,6 @@ class MyApp extends StatelessWidget {
                     }
                   },
                 );
-                // return BlocBuilder<SignInBloc, SignInState>(
-                //   builder: (context, state) {
-                //     if(state is AuthenticationSuccess && state.){
-
-                //     }
-                //     return MyHomePage(
-                //       title: "hello",
-                //     );
-                //   },
-                // );
               } else {
                 return const SignInPage();
               }

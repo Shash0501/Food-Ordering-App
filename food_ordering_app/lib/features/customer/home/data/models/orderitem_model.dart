@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:developer' as developer;
 
 import '../../../../customer/home/domain/entities/orderitem.dart';
 
@@ -36,9 +35,6 @@ class OrderItemModel extends OrderItem {
     });
 
     Timestamp a = json["orderDate"];
-    developer.log(
-        '${DateTime.fromMicrosecondsSinceEpoch(a.microsecondsSinceEpoch)}',
-        name: 'On orderItemModelCreate');
 
     return OrderItemModel(
       orderId: json['orderId'],

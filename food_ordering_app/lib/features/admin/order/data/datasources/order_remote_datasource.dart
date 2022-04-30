@@ -15,7 +15,6 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   @override
   Future<List<OrderItemModel>> getOrders(List<String> orderIds) async {
     List<OrderItemModel> orders = [];
-    List<OrderItemModel> a = [];
     try {
       for (var element in orderIds) {
         await FirebaseFirestore.instance
