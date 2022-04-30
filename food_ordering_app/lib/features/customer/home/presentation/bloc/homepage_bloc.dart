@@ -2,10 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_ordering_app/cache/restaurantIds.dart';
 import 'package:food_ordering_app/features/customer/home/data/repositories/home_repository_impl.dart';
-import 'package:food_ordering_app/features/customer/home/domain/repositories/homerepository.dart';
-import 'package:hive/hive.dart';
-
-import '../../../../../cache/ids.dart';
 
 import '../../data/datasources/home_remote_datasource.dart';
 import '../../domain/usecases/getmenubyrestaurants.dart' as gmr;
@@ -17,9 +13,7 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
   HomepageBloc() : super(HomepageInitial()) {
     on<HomepageEvent>((event, emit) async {
       if (event is CacheRestaurantIds) {
-        print("Caching the data");
         cacheRestaurantIds();
-        print("Caching the data 1");
       } else if (event is RestaurantMenu) {
         gmr.getOrdersR GetOrdersR = gmr.getOrdersR(
             repository: HomeRepositoryImpl(

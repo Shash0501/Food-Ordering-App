@@ -3,8 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/usecases/usecase.dart';
-import '../../../../admin/menu/data/models/menuitem_model.dart';
-import '../../data/models/orderitem_model.dart';
+import '../../data/models/menuitem_model.dart';
 import '../repositories/homerepository.dart';
 
 class getOrdersR implements UseCase<List<MenuItemModel>, Params> {
