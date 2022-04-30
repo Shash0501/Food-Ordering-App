@@ -27,100 +27,106 @@ class _SingleOrderPageState extends State<SingleOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<OrderBloc, OrderState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is OrderInitial) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (state is OrderItemLoaded) {
-          print("Printing the orders");
-          print(state.order);
+    return SafeArea(
+      child: BlocConsumer<OrderBloc, OrderState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is OrderInitial) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is OrderItemLoaded) {
+            print("Printing the orders");
+            print(state.order);
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text("Order Details"),
+                ),
+                body: CircularProgressIndicator());
+          }
           return Scaffold(
-              appBar: AppBar(
-                title: Text("Order Details"),
+            appBar: AppBar(
+              backgroundColor: Colors.redAccent,
+              title: const Text(
+                'Single Order Page',
               ),
-              body: CircularProgressIndicator());
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Single Order Page'),
-          ),
+            ),
 
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    ' Order Summary',
-                    style: TextStyle(
-                      fontSize: 27,
-                      letterSpacing: 1.3,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ' Order Summary',
+                      style: TextStyle(
+                        fontSize: 27,
+                        letterSpacing: 1.3,
+                      ),
                     ),
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.all(0),
-                    title: Text(
-                      widget.orderItem.restaurantId.trim(),
+                    ListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      title: Text(
+                        widget.orderItem.restaurantId.trim(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      subtitle: Text(widget.orderItem.address,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          )),
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 10,
+                    ),
+                    Text(
+                      'Your Order',
                       style: TextStyle(
                         fontSize: 20,
                         letterSpacing: 1.5,
                       ),
                     ),
-                    subtitle: Text(widget.orderItem.address,
-                        style: TextStyle(
-                          color: Colors.grey,
-                        )),
-                  ),
-                  Divider(
-                    color: Colors.grey,
-                    height: 10,
-                  ),
-                  Text(
-                    'Your Order',
-                    style: TextStyle(
-                      fontSize: 20,
-                      letterSpacing: 1.5,
+                    Divider(
+                      color: Colors.grey[300],
+                      height: 10,
                     ),
-                  ),
-                  Divider(
-                    color: Colors.grey[300],
-                    height: 10,
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.orderItem.order.length,
-                      itemBuilder: (context, index) {
-                        return OrderItem(
-                          item: widget.orderItem.order[index],
-                        );
-                      }),
-                  OrderSummary(orderItems: widget.orderItem.order),
-                  OrderDetails(
-                    orderItem: widget.orderItem,
-                  )
-                ],
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: widget.orderItem.order.length,
+                        itemBuilder: (context, index) {
+                          return OrderItem(
+                            item: widget.orderItem.order[index],
+                          );
+                        }),
+                    OrderSummary(orderItems: widget.orderItem.order),
+                    OrderDetails(
+                      orderItem: widget.orderItem,
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
 
-          // body: Column(
-          //   children: [
-          //     Text('Order ID: ${widget.orderItem.orderId}'),
-          //     Text('Customer ID: ${widget.orderItem.customerId}'),
-          //     Text('Restaurant ID: ${widget.orderItem.restaurantId}'),
-          //     Text('Order Date: ${widget.orderItem.orderDate.day} '),
-          //     Text('Total Amount: ${widget.orderItem.totalAmount}'),
-          //     Text('Rating Given: ${widget.orderItem.ratingGiven}'),
-          //     Text('Status: ${widget.orderItem.status}'),
-          //     Text('Address: ${widget.orderItem.address} '),
-          //     Text('Order: ${widget.orderItem.order}'),
-          //   ],
-          // ),
-        );
-      },
+            // body: Column(
+            //   children: [
+            //     Text('Order ID: ${widget.orderItem.orderId}'),
+            //     Text('Customer ID: ${widget.orderItem.customerId}'),
+            //     Text('Restaurant ID: ${widget.orderItem.restaurantId}'),
+            //     Text('Order Date: ${widget.orderItem.orderDate.day} '),
+            //     Text('Total Amount: ${widget.orderItem.totalAmount}'),
+            //     Text('Rating Given: ${widget.orderItem.ratingGiven}'),
+            //     Text('Status: ${widget.orderItem.status}'),
+            //     Text('Address: ${widget.orderItem.address} '),
+            //     Text('Order: ${widget.orderItem.order}'),
+            //   ],
+            // ),
+          );
+        },
+      ),
     );
   }
 }
@@ -222,10 +228,10 @@ class OrderSummary extends StatelessWidget {
         ),
         ExpandedRow(
           leftChild: Text('Promo - (YUMMY)',
-              style: TextStyle(fontSize: 15, color: Colors.blue[800])),
+              style: TextStyle(fontSize: 15, color: Colors.blue)),
           rightChild: Text(
             'You Saved ₹$promoDiscount',
-            style: TextStyle(color: Colors.blue[800]),
+            style: TextStyle(color: Colors.blue),
           ),
         ),
         ExpandedRow(
@@ -260,16 +266,20 @@ class OrderSummary extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 30,
+            height: 35,
             child: DecoratedBox(
               child: Center(
-                child: ExpandedRow(
-                  leftChild: Text(
-                    "Your total savings",
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 15),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ExpandedRow(
+                    leftChild: Text(
+                      "Your total savings",
+                      style: TextStyle(color: Colors.blueAccent, fontSize: 15),
+                    ),
+                    rightChild: Text('₹ ${promoDiscount}',
+                        style:
+                            TextStyle(color: Colors.blueAccent, fontSize: 15)),
                   ),
-                  rightChild: Text('₹ ${promoDiscount}',
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 15)),
                 ),
               ),
               decoration: BoxDecoration(
@@ -312,7 +322,7 @@ class ExpandedRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 2.5, 0, 2.5),
       child: Row(
         children: [
           Expanded(child: leftChild),

@@ -19,6 +19,7 @@ class _MyAdminPageState extends State<MyAdminPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: const Text("ADMIN"),
           bottom: TabBar(tabs: [
             Tab(
