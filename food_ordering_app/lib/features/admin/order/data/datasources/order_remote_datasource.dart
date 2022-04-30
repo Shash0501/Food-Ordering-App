@@ -7,6 +7,8 @@ import '../models/orderitem_model.dart';
 
 abstract class OrderRemoteDataSource {
   Future<List<OrderItemModel>> getOrders(List<String> orderIds);
+  Future<List<MenuItemModel>> getItemDetails(
+      List<String> itemIds, String restaurantId);
 }
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
@@ -21,11 +23,35 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
             .doc(element)
             .get()
             .then((value) {
-          print(value.data());
           orders.add(OrderItemModel.fromJson(value.data()!));
         });
       }
       return orders;
+    } catch (e) {
+      print(e);
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<MenuItemModel>> getItemDetails(
+      List<String> itemIds, String restaurantId) async {
+    List<MenuItemModel> orderItem = [];
+    try {
+      for (var element in itemIds) {
+        await FirebaseFirestore.instance
+            .collection("restaurants")
+            .doc(restaurantId)
+            .collection("menu")
+            .doc(element)
+            .get()
+            .then((value) {
+          print("item details");
+          print(value.data());
+          orderItem.add(MenuItemModel.fromJson(value.data()!));
+        });
+      }
+      return orderItem;
     } catch (e) {
       print(e);
       throw ServerException();

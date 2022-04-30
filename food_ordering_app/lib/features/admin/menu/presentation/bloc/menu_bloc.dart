@@ -65,8 +65,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           result.fold(
             (failure) => {print("Failure")},
             (menuItems) {
-              print("The number of items are : ");
-              print(menuItems.length);
               emit(MenuLoaded(menuItems: menuItems));
             },
           );

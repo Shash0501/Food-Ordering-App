@@ -46,8 +46,6 @@ class MenuRepositoryImpl implements MenuRepository {
         description,
         itemId,
       );
-      print("Printing the reposiroty resutls");
-      print(result);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure());

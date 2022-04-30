@@ -7,4 +7,6 @@ import '../../../menu/data/models/menuitem_model.dart';
 abstract class OrderRepository {
   Future<Either<Failure, List<OrderItemModel>>> getOrders(
       List<String> orderIds);
+  Future<Either<Failure, List<MenuItemModel>>> getItemDetails(
+      List<String> itemIds, String restaurantId);
 }

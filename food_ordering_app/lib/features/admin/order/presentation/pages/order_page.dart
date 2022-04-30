@@ -29,7 +29,6 @@ class _OrderPageState extends State<OrderPage> {
       List<String> orderIds = snapshot.docs.map((DocumentSnapshot doc) {
         return doc.id.trim();
       }).toList();
-      print(orderIds);
       BlocProvider.of<OrderBloc>(context).add(LoadOrders(orderIds: orderIds));
     });
     // TODO: implement initState

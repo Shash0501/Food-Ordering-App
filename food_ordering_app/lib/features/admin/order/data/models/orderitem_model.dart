@@ -29,17 +29,12 @@ class OrderItemModel extends OrderItem {
           address: address,
         );
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
-    print(json['order']);
-    print(json['order'].runtimeType);
-
     List<Map<String, dynamic>> order = [];
     json['order'].forEach((element) {
       order.add(element);
     });
 
     Timestamp a = json["orderDate"];
-    print(json['totalAmount'].runtimeType);
-    print(json['ratingGiven'].runtimeType);
 
     return OrderItemModel(
       orderId: json['orderId'],

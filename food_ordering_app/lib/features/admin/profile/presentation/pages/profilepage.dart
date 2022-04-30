@@ -14,26 +14,21 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Widget textfield({@required hintText}) {
-    return Material(
-      elevation: 4,
-      shadowColor: Colors.grey,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-              letterSpacing: 2,
-              color: Colors.black54,
-              fontWeight: FontWeight.bold),
-          fillColor: Colors.white30,
-          filled: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
+  TextEditingController A = TextEditingController();
+  Widget textfield({required hintText}) {
+    return TextFormField(
+      controller: A,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(
+            letterSpacing: 2,
+            color: Colors.black54,
+            fontWeight: FontWeight.bold),
+        fillColor: Colors.white30,
+        // filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
         ),
       ),
     );
@@ -89,14 +84,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 4,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.white, width: 5),
                         shape: BoxShape.circle,
                         color: Colors.white,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('images/profile.png'),
+                          image: AssetImage('assets/images/profile.jpg'),
                         ),
                       ),
                     ),
@@ -104,16 +99,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 270, left: 184),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black54,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
                 )
               ],
             ),

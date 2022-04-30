@@ -17,3 +17,10 @@ class OrdersLoaded extends OrderState {
   @override
   List<Object> get props => [orders];
 }
+
+class OrderItemLoaded extends OrderState {
+  final List<MenuItemModel> order;
+  OrderItemLoaded({required this.order});
+  @override
+  List<Object> get props => [order];
+}

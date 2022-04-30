@@ -53,7 +53,6 @@ class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
           .collection("menu")
           .doc(itemId)
           .set(itemJson);
-      print("Item added");
       await FirebaseFirestore.instance
           .collection("restaurants")
           .doc(restaurantId)
@@ -61,7 +60,7 @@ class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
           .get()
           .then((value) => {
                 (value.docs.forEach((element) {
-                  print(element.data());
+                  // print(element.data());
                 }))
               });
       return true;
@@ -113,7 +112,7 @@ class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
     );
     Map<String, dynamic> itemJson = (menuItemModel.toJson());
     String isveg = isVeg ? 'Vegetarian' : 'Non-Vegetarian';
-    print(itemId);
+
     try {
       await FirebaseFirestore.instance
           .collection("restaurants")
@@ -121,7 +120,6 @@ class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
           .collection("menu")
           .doc(itemId)
           .set(itemJson);
-      print("Item edited");
       return true;
     } catch (e) {
       print(e);
