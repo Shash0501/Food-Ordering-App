@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/features/admin/menu/data/models/menuitem_model.dart';
 
 import '../../data/models/orderitem_model.dart';
 import '../bloc/order_bloc.dart';
@@ -27,103 +28,97 @@ class _SingleOrderPageState extends State<SingleOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.orderItem.order);
     return SafeArea(
       child: BlocConsumer<OrderBloc, OrderState>(
         listener: (context, state) {},
         builder: (context, state) {
           if (state is OrderInitial) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (state is OrderItemLoaded) {
             print("Printing the orders");
             print(state.order);
+            // return Scaffold(
+            //     appBar: AppBar(
+            //       title: Text("Order Details"),
+            //     ),
+            //     body: const CircularProgressIndicator());
             return Scaffold(
-                appBar: AppBar(
-                  title: Text("Order Details"),
+              appBar: AppBar(
+                backgroundColor: Colors.redAccent,
+                title: const Text(
+                  'Single Order Page',
                 ),
-                body: CircularProgressIndicator());
-          }
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.redAccent,
-              title: const Text(
-                'Single Order Page',
               ),
-            ),
-
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ' Order Summary',
-                      style: TextStyle(
-                        fontSize: 27,
-                        letterSpacing: 1.3,
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        ' Order Summary',
+                        style: TextStyle(
+                          fontSize: 27,
+                          letterSpacing: 1.3,
+                        ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      title: Text(
-                        widget.orderItem.restaurantId.trim(),
+                      ListTile(
+                        contentPadding: const EdgeInsets.all(0),
+                        title: Text(
+                          widget.orderItem.restaurantId.trim(),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            letterSpacing: 1.5,
+                          ),
+                        ),
+                        subtitle: Text(widget.orderItem.address,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            )),
+                      ),
+                      const Divider(
+                        color: Colors.grey,
+                        height: 10,
+                      ),
+                      const Text(
+                        'Your Order',
                         style: TextStyle(
                           fontSize: 20,
                           letterSpacing: 1.5,
                         ),
                       ),
-                      subtitle: Text(widget.orderItem.address,
-                          style: TextStyle(
-                            color: Colors.grey,
-                          )),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 10,
-                    ),
-                    Text(
-                      'Your Order',
-                      style: TextStyle(
-                        fontSize: 20,
-                        letterSpacing: 1.5,
+                      Divider(
+                        color: Colors.grey[300],
+                        height: 10,
                       ),
-                    ),
-                    Divider(
-                      color: Colors.grey[300],
-                      height: 10,
-                    ),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: widget.orderItem.order.length,
-                        itemBuilder: (context, index) {
-                          return OrderItem(
-                            item: widget.orderItem.order[index],
-                          );
-                        }),
-                    OrderSummary(orderItems: widget.orderItem.order),
-                    OrderDetails(
-                      orderItem: widget.orderItem,
-                    )
-                  ],
+                      ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: widget.orderItem.order.length,
+                          itemBuilder: (context, index) {
+                            return OrderItem(
+                              // item: widget.orderItem.order[index],
+                              item: state.order[index],
+                              quantity: widget.orderItem.order[index]
+                                  ["quantity"],
+                            );
+                          }),
+                      OrderSummary(orderItems: widget.orderItem.order),
+                      OrderDetails(
+                        orderItem: widget.orderItem,
+                      )
+                    ],
+                  ),
                 ),
               ),
+            );
+          }
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-
-            // body: Column(
-            //   children: [
-            //     Text('Order ID: ${widget.orderItem.orderId}'),
-            //     Text('Customer ID: ${widget.orderItem.customerId}'),
-            //     Text('Restaurant ID: ${widget.orderItem.restaurantId}'),
-            //     Text('Order Date: ${widget.orderItem.orderDate.day} '),
-            //     Text('Total Amount: ${widget.orderItem.totalAmount}'),
-            //     Text('Rating Given: ${widget.orderItem.ratingGiven}'),
-            //     Text('Status: ${widget.orderItem.status}'),
-            //     Text('Address: ${widget.orderItem.address} '),
-            //     Text('Order: ${widget.orderItem.order}'),
-            //   ],
-            // ),
           );
         },
       ),
@@ -132,13 +127,15 @@ class _SingleOrderPageState extends State<SingleOrderPage> {
 }
 
 class OrderItem extends StatelessWidget {
-  final dynamic item;
-  OrderItem({Key? key, required this.item}) : super(key: key);
+  final MenuItemModel item;
+  final int quantity;
+  OrderItem({Key? key, required this.item, required this.quantity})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
       title: Row(
         children: [
           Image.network(
@@ -146,12 +143,12 @@ class OrderItem extends StatelessWidget {
             width: 20,
             height: 20,
           ),
-          SizedBox(
+          const SizedBox(
             width: 25,
           ),
           Text(
-            '${item['itemId']}',
-            style: TextStyle(
+            item.itemName,
+            style: const TextStyle(
               wordSpacing: 3,
               letterSpacing: 1.5,
               fontSize: 15,
@@ -162,8 +159,9 @@ class OrderItem extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Quantity: ${item['quantity']}"),
-          SizedBox(
+          // TODO chaneg this
+          Text("Quantity: ${quantity}"),
+          const SizedBox(
             height: 5,
           ),
           Row(children: [
@@ -174,11 +172,13 @@ class OrderItem extends StatelessWidget {
                     width: 23,
                     height: 23,
                     child: DecoratedBox(
-                      child: Center(child: Text("${item['quantity']}")),
+                      // TODO chaneg this
+
+                      child: Center(child: Text("${quantity}")),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Color.fromARGB(255, 175, 216, 176),
-                        border: Border(
+                        border: const Border(
                           left: BorderSide(color: Colors.green),
                           bottom: BorderSide(color: Colors.green),
                           top: BorderSide(color: Colors.green),
@@ -188,8 +188,8 @@ class OrderItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    " X ₹${item['price']}",
-                    style: TextStyle(
+                    " X ₹${item.price}",
+                    style: const TextStyle(
                       letterSpacing: 2,
                       wordSpacing: 2,
                     ),
@@ -197,9 +197,11 @@ class OrderItem extends StatelessWidget {
                 ],
               ),
             ),
-            Text('₹${item['quantity'] * item['price']}')
+            // TODO chaneg this
+
+            Text('₹${quantity * item.price}')
           ]),
-          Divider(
+          const Divider(
             color: Colors.grey,
             height: 10,
           ),
@@ -223,15 +225,15 @@ class OrderSummary extends StatelessWidget {
     return Column(
       children: [
         ExpandedRow(
-          leftChild: Text('Item Total', style: TextStyle(fontSize: 15)),
+          leftChild: const Text('Item Total', style: TextStyle(fontSize: 15)),
           rightChild: Text('₹$totalItemPrice'),
         ),
         ExpandedRow(
-          leftChild: Text('Promo - (YUMMY)',
+          leftChild: const Text('Promo - (YUMMY)',
               style: TextStyle(fontSize: 15, color: Colors.blue)),
           rightChild: Text(
             'You Saved ₹$promoDiscount',
-            style: TextStyle(color: Colors.blue),
+            style: const TextStyle(color: Colors.blue),
           ),
         ),
         ExpandedRow(
@@ -272,7 +274,7 @@ class OrderSummary extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: ExpandedRow(
-                    leftChild: Text(
+                    leftChild: const Text(
                       "Your total savings",
                       style: TextStyle(color: Colors.blueAccent, fontSize: 15),
                     ),
@@ -285,7 +287,7 @@ class OrderSummary extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Color.fromARGB(255, 176, 230, 255),
-                border: Border(
+                border: const Border(
                   left: BorderSide(color: Colors.blue),
                   bottom: BorderSide(color: Colors.blue),
                   top: BorderSide(color: Colors.blue),
@@ -334,7 +336,7 @@ class ExpandedRow extends StatelessWidget {
 }
 
 class OrderDetails extends StatelessWidget {
-  final dynamic orderItem;
+  final OrderItemModel orderItem;
 
   const OrderDetails({Key? key, required this.orderItem}) : super(key: key);
 
@@ -343,12 +345,13 @@ class OrderDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Order Details',
           style: TextStyle(fontSize: 20),
         ),
-        OrderDetailItem(parameter: "Order Number", value: "1922"),
-        OrderDetailItem(parameter: "Payment", value: "Paid : Using UPI"),
+        OrderDetailItem(
+            parameter: "Order Number", value: orderItem.orderId.toString()),
+        const OrderDetailItem(parameter: "Payment", value: "Paid : Using UPI"),
         OrderDetailItem(
             parameter: "Date", value: orderItem.orderDate.toString())
       ],
