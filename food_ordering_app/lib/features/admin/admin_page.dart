@@ -19,6 +19,7 @@ class _MyAdminPageState extends State<MyAdminPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: const Text("ADMIN"),
           bottom: TabBar(tabs: [
             Tab(
@@ -34,8 +35,8 @@ class _MyAdminPageState extends State<MyAdminPage> {
         ),
         body: TabBarView(
           children: [
-            ProfilePage(restaurantId: widget.restaurantId),
             OrderPage(restaurantId: widget.restaurantId),
+            ProfilePage(restaurantId: widget.restaurantId),
             MenuPage(restaurantId: widget.restaurantId),
           ],
         ),

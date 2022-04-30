@@ -42,19 +42,17 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Orders")),
-        body: BlocBuilder<OrderBloc, OrderState>(
-          builder: (context, state) {
-            if (state is OrdersLoaded) {
-              return ListView.builder(
-                  itemCount: state.orders.length,
-                  itemBuilder: (context, index) {
-                    return OrderCard(order: state.orders[index]);
-                  });
-            }
-            return Container();
-          },
-        ));
+    return Scaffold(body: BlocBuilder<OrderBloc, OrderState>(
+      builder: (context, state) {
+        if (state is OrdersLoaded) {
+          return ListView.builder(
+              itemCount: state.orders.length,
+              itemBuilder: (context, index) {
+                return OrderCard(order: state.orders[index]);
+              });
+        }
+        return Container();
+      },
+    ));
   }
 }

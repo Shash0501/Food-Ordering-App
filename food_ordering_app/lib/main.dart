@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'CPing',
-        theme: ThemeData.dark(),
+        theme: ThemeData(
+            primaryColor: Colors.redAccent,
+            primaryColorLight: Colors.redAccent),
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
