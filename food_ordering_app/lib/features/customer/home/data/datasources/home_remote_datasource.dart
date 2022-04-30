@@ -6,13 +6,13 @@ import '../../../../../cache/restaurantIds.dart';
 import '../models/menuitem_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<List<MenuItemModel>> getOrdersR(String restaurantId);
-  Future<List<MenuItemModel>> getOrdersC(String category);
+  Future<List<MenuItemModel>> getMenuR(String restaurantId);
+  Future<List<MenuItemModel>> getMenu(String category);
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
-  Future<List<MenuItemModel>> getOrdersR(String restaurantId) async {
+  Future<List<MenuItemModel>> getMenuR(String restaurantId) async {
     List<MenuItemModel> orders = [];
     try {
       await FirebaseFirestore.instance
@@ -34,7 +34,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<List<MenuItemModel>> getOrdersC(String category) async {
+  Future<List<MenuItemModel>> getMenu(String category) async {
     List<MenuItemModel> orders = [];
 
     List<String> restaurantIds = getRestaurantIds();
@@ -47,9 +47,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
             .get()
             .then((value) {
           value.docs.forEach((element1) {
-            if (element1.data().isNotEmpty &&
-                element1.data()["category"] == category) {
-              print(1);
+            // ?? Here I have omitted the condition for category
+            // ?? This will return all the items of all the restaurants
+            if (element1.data().isNotEmpty) {
+              print(element1.data());
               orders.add(MenuItemModel.fromJson(element1.data(), element));
             }
           });

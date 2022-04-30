@@ -14,10 +14,10 @@ class HomeRepositoryImpl implements HomeRepository {
   });
 
   @override
-  Future<Either<Failure, List<MenuItemModel>>> getOrdersR(
+  Future<Either<Failure, List<MenuItemModel>>> getMenuR(
       String restaurantId) async {
     try {
-      final orders = await remoteDataSource.getOrdersR(restaurantId);
+      final orders = await remoteDataSource.getMenuR(restaurantId);
 
       return Right(orders);
     } on ServerException {
@@ -26,10 +26,9 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<Failure, List<MenuItemModel>>> getOrdersC(
-      String category) async {
+  Future<Either<Failure, List<MenuItemModel>>> getMenu(String category) async {
     try {
-      final orders = await remoteDataSource.getOrdersC(category);
+      final orders = await remoteDataSource.getMenu(category);
       return Right(orders);
     } on ServerException {
       return Left(ServerFailure());

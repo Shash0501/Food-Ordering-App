@@ -10,14 +10,14 @@ import '../../data/models/menuitem_model.dart';
 // repository
 import '../repositories/homerepository.dart';
 
-class getOrdersC implements UseCase<List<MenuItemModel>, Params> {
+class getMenu implements UseCase<List<MenuItemModel>, Params> {
   final HomeRepository repository;
 
-  getOrdersC({required this.repository});
+  getMenu({required this.repository});
 
   @override
   Future<Either<Failure, List<MenuItemModel>>> call(Params params) async {
-    return await repository.getOrdersC(
+    return await repository.getMenu(
       params.category,
     );
   }

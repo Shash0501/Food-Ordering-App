@@ -26,3 +26,5 @@ class CategoryMenu extends HomepageEvent {
   @override
   List<Object> get props => [category];
 }
+
+class Menu extends HomepageEvent {}

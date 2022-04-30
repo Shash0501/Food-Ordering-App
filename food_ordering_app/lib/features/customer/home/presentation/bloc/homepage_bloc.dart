@@ -4,8 +4,9 @@ import 'package:food_ordering_app/cache/restaurantIds.dart';
 import 'package:food_ordering_app/features/customer/home/data/repositories/home_repository_impl.dart';
 
 import '../../data/datasources/home_remote_datasource.dart';
+import '../../data/models/menuitem_model.dart';
 import '../../domain/usecases/getmenubyrestaurants.dart' as gmr;
-import '../../domain/usecases/getmenubycategory.dart' as gmc;
+import '../../domain/usecases/getmenu.dart' as gmc;
 part 'homepage_event.dart';
 part 'homepage_state.dart';
 
@@ -15,22 +16,26 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
       if (event is CacheRestaurantIds) {
         cacheRestaurantIds();
       } else if (event is RestaurantMenu) {
-        gmr.getOrdersR GetOrdersR = gmr.getOrdersR(
+        gmr.getMenuR GetMenuR = gmr.getMenuR(
             repository: HomeRepositoryImpl(
                 remoteDataSource: HomeRemoteDataSourceImpl()));
 
-        await GetOrdersR.call(gmr.Params(restaurantId: event.restaurantId))
+        await GetMenuR.call(gmr.Params(restaurantId: event.restaurantId))
             .then((value) {
           print(value);
         });
-      } else if (event is CategoryMenu) {
-        gmc.getOrdersC GetOrdersC = gmc.getOrdersC(
+      } else if (event is Menu) {
+        emit(Loading());
+        gmc.getMenu GetMenu = gmc.getMenu(
             repository: HomeRepositoryImpl(
                 remoteDataSource: HomeRemoteDataSourceImpl()));
-
-        await GetOrdersC.call(gmc.Params(category: event.category))
-            .then((value) {
+        // ?? Here I am sending random value for category as before this function was implementerd for
+        // ?? getting menu by category.
+        // ?? but in the remote datasource layer I have omitted  the category checking
+        await GetMenu.call(gmc.Params(category: "A")).then((value) {
           print(value);
+          value.fold((failure) => print(failure),
+              (value) => emit(MenuLoaded(menu: value)));
         });
       }
     });
