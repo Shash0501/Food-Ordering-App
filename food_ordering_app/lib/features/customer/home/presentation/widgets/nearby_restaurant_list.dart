@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/pages/create_order_page.dart';
 import 'package:food_ordering_app/features/admin/profile/data/models/profile_model.dart';
 import 'package:food_ordering_app/features/customer/home/presentation/widgets/restaurant_card.dart';
 
@@ -55,6 +56,10 @@ class _NearbyRestaurantListState extends State<NearbyRestaurantList> {
                       itemBuilder: (context, index) {
                         return RestaurantCard(
                           restaurantProfile: snapshot.data[index],
+                          onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreateOrderPage()));
+                  },
                         );
                       });
                 } else if (snapshot.connectionState ==
