@@ -27,9 +27,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       List<String> LorderIds = snapshot.docs.map((DocumentSnapshot doc) {
         return doc.id.trim();
       }).toList();
-      setState(() {
-        orderIds = LorderIds;
-      });
+
       print(orderIds);
       if (mounted) {
         BlocProvider.of<OrderBloc>(context)
@@ -47,7 +45,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("Assssssssssssss");
     return Scaffold(
         appBar: AppBar(
           title: Text("Order History"),

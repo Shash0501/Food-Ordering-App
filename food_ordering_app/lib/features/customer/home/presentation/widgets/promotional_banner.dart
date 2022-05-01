@@ -6,8 +6,8 @@ class PromotionalBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Padding(
-        padding: const EdgeInsets.all(15.0),
+      const Padding(
+        padding: EdgeInsets.all(15.0),
         child: Text(
           'Check These Out',
           style: TextStyle(

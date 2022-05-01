@@ -7,23 +7,25 @@ class RestaurantProfileModel extends RestaurantProfile {
       required String address,
       required String phone,
       required String email,
-      required double rating})
+      required double rating,
+      required int nratings})
       : super(
             address: address,
             email: email,
             phone: phone,
             rating: rating,
+            nratings: nratings,
             restaurantId: restaurantId,
             restaurantName: restaurantName);
-
   factory RestaurantProfileModel.fromJson(Map<String, dynamic> json) {
     return RestaurantProfileModel(
         restaurantId: json['restaurantId'],
         restaurantName: json['restaurantName'],
         address: json['address'],
-        phone: json['phone'],
+        phone: json['phone'].toString(),
         email: json['email'],
-        rating: json['rating']);
+        rating: json['rating'].toDouble(),
+        nratings: json['nratings']);
   }
 
   Map<String, dynamic> toJson() {
@@ -33,7 +35,8 @@ class RestaurantProfileModel extends RestaurantProfile {
       'address': address,
       'phone': phone,
       'email': email,
-      'rating': rating
+      'rating': rating,
+      'nratings': nratings
     };
   }
 }

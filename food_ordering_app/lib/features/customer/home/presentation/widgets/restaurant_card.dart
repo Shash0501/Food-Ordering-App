@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/features/admin/profile/domain/entities/profile.dart';
+
+import '../../../../admin/profile/data/models/profile_model.dart';
 
 class RestaurantCard extends StatelessWidget {
   final onTap;
-  const RestaurantCard({Key? key, required this.onTap}) : super(key: key);
+  RestaurantProfileModel restaurantProfile;
+  RestaurantCard(
+      {Key? key, required this.onTap, required this.restaurantProfile})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class RestaurantCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Red Rock Agency',
+                          restaurantProfile.restaurantName,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -37,22 +43,22 @@ class RestaurantCard extends StatelessWidget {
                               color: Colors.black),
                         ),
                       ),
-                      Text('3.1 Stars')
+                      Text(restaurantProfile.rating.toString())
                     ],
                   ),
                   Row(
                     children: [
                       Expanded(
-                        child: Text('Pizza, Burger, Momos'),
+                        child: Text(restaurantProfile.email),
                       ),
-                      Text('Rs. 150 for one'),
+                      Text('${restaurantProfile.nratings} ratings'),
                     ],
                   ),
                   Divider(
                     height: 10,
                     color: Colors.grey,
                   ),
-                  Text('We recycle more plastic than used in our orders'),
+                  Text(restaurantProfile.address),
                 ],
               ),
             ),

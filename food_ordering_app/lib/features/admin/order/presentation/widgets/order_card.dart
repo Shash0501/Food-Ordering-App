@@ -51,17 +51,19 @@ class _OrderCardState extends State<OrderCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleOrderPage(orderItem: orderListing,)));
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SingleOrderPage(
+                        orderItem: orderListing,
+                      )));
             },
-
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
               child: Row(
                 children: [
                   Expanded(child: Text('ID: ${orderListing.orderId}')),
                   Text(
-                      '${orderListing.orderDate.hour}:${orderListing.orderDate.minute} PM')
+                      '${orderListing.orderDate.toDate().hour}:${orderListing.orderDate.toDate().minute} PM')
                 ],
               ),
             ),
@@ -203,9 +205,7 @@ class _OrderCardState extends State<OrderCard> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.red),
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                   child: Text('DECLINE', style: TextStyle(letterSpacing: 1.5)),
                 )
               ],

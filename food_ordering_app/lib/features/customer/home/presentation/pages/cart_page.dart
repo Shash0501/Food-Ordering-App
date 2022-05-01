@@ -1,10 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/cache/order.dart';
-// import 'package:food_ordering_app/features/admin/order/data/models/orderitem_model.dart';
 import 'package:food_ordering_app/features/customer/home/presentation/bloc/homepage_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 
@@ -42,9 +41,9 @@ class _CartPageState extends State<CartPage> {
                   customerId:
                       FirebaseAuth.instance.currentUser!.email.toString(),
                   restaurantId: restaurantId,
-                  orderDate: DateTime.now(),
+                  orderDate: Timestamp.now(),
                   totalAmount: totalAmount(),
-                  ratingGiven: 0,
+                  ratingGiven: 2,
                   status: "Placed",
                   order: getOrderList(),
                   pincode: 314122,

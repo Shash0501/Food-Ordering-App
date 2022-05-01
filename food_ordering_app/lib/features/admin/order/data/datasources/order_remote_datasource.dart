@@ -22,7 +22,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
             .doc(element)
             .get()
             .then((value) {
-          orders.add(OrderItemModel.fromJson(value.data()!));
+          if (value.data() != null) {
+            orders.add(OrderItemModel.fromJson(value.data()!));
+          }
         });
       }
       return orders;
@@ -47,8 +49,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
             .get()
             .then((value) {
           print("item details");
-          print(value.data());
-          orderItem.add(MenuItemModel.fromJson(value.data()!));
+          if (value.data() != null) {
+            orderItem.add(MenuItemModel.fromJson(value.data()!));
+          }
         });
       }
       return orderItem;

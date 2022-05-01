@@ -40,9 +40,9 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<List<MenuItemModel>> getMenu(String category) async {
     List<MenuItemModel> orders = [];
-    print("he ji");
+
     List<String> restaurantIds = getRestaurantIds();
-    print(restaurantIds);
+
     try {
       for (var element in restaurantIds) {
         await FirebaseFirestore.instance

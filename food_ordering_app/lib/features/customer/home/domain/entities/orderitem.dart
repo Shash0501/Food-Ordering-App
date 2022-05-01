@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:equatable/equatable.dart";
 
 class OrderItem extends Equatable {
   String orderId;
   String customerId;
   String restaurantId;
-  DateTime orderDate;
+  Timestamp orderDate;
   double totalAmount;
   double? ratingGiven;
   String status;
