@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/cache/order.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../data/models/menuitem_model.dart';
 
@@ -16,7 +17,6 @@ class _CounterWidgetState extends State<CounterWidget> {
   var box = Hive.box<CurrentOrder>("currentOrder");
   @override
   void initState() {
-    box.clear();
     super.initState();
   }
 
@@ -57,6 +57,7 @@ class _CounterWidgetState extends State<CounterWidget> {
                           itemName: widget.menuItem.itemName);
                       box.put(MI.itemId, newCurrentOrder);
                     } else {
+                      print("deleting item");
                       box.delete(MI.itemId);
                     }
                   }
@@ -65,7 +66,11 @@ class _CounterWidgetState extends State<CounterWidget> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Text(box.get(MI.itemId)?.quantity.toString() ?? "0"),
+              child: ValueListenableBuilder<Box>(
+                  valueListenable: box.listenable(),
+                  builder: (buildContext, box, _) {
+                    return Text(box.get(MI.itemId)?.quantity.toString() ?? "0");
+                  }),
             ),
             IconButton(
               icon: const Icon(Icons.add),
