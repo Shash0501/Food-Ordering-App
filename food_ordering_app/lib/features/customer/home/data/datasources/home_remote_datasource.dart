@@ -40,8 +40,9 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<List<MenuItemModel>> getMenu(String category) async {
     List<MenuItemModel> orders = [];
-
+    print("he ji");
     List<String> restaurantIds = getRestaurantIds();
+    print(restaurantIds);
     try {
       for (var element in restaurantIds) {
         await FirebaseFirestore.instance
@@ -51,6 +52,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
             .get()
             .then((value) {
           value.docs.forEach((element1) {
+            print(element1.data());
+            print("Asd");
             // ?? Here I have omitted the condition for category
             // ?? This will return all the items of all the restaurants
             if (element1.data().isNotEmpty) {

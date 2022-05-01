@@ -19,3 +19,6 @@ class MenuLoaded extends HomepageState {
 }
 
 class Loading extends HomepageState {}
+
+
+class DataCachedSuccesfully extends HomepageState{}

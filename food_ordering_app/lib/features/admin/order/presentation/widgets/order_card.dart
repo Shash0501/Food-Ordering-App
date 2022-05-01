@@ -204,11 +204,7 @@ class _OrderCardState extends State<OrderCard> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.red),
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return _buildPopupDialog(context);
-                        });
+
                   },
                   child: Text('DECLINE', style: TextStyle(letterSpacing: 1.5)),
                 )
