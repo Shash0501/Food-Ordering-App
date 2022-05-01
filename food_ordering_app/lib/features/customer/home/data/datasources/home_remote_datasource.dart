@@ -70,14 +70,14 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   Future<bool> placeOrder(OrderItemModel order) async {
     try {
       // Setting data in the collection order
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection("orders")
           .doc(order.orderId)
           .set(order.toJson());
 
       String email = FirebaseAuth.instance.currentUser!.email!;
       // Setting data in the collection restaurant
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection("restaurants")
           .doc(order.restaurantId)
           .collection("orders")
@@ -85,7 +85,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           .set({});
 
       // Setting data in the collection customer
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection("customer")
           .doc(email)
           .collection("orders")
