@@ -11,7 +11,6 @@ import 'package:uuid/uuid.dart';
 import '../../data/models/menuitem_model.dart';
 import '../../data/models/orderitem_model.dart';
 import '../widgets/counter.dart';
-import "package:uuid/uuid.dart";
 
 class CartPage extends StatefulWidget {
   CartPage({Key? key}) : super(key: key);
@@ -46,7 +45,7 @@ class _CartPageState extends State<CartPage> {
                   orderDate: DateTime.now(),
                   totalAmount: totalAmount(),
                   ratingGiven: 0,
-                  status: "Pending",
+                  status: "Placed",
                   order: getOrderList(),
                   pincode: 314122,
                   address: "asdasdasd asdvhv a jsvdj hasdjb");
