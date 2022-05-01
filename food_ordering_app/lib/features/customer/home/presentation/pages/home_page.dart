@@ -8,6 +8,7 @@ import '../../../../../cache/ids.dart';
 import '../bloc/homepage_bloc.dart';
 import '../widgets/counter.dart';
 import 'cart_page.dart';
+import 'order_history_page.dart';
 
 class CustomerHomePage extends StatefulWidget {
   const CustomerHomePage({Key? key}) : super(key: key);
@@ -95,12 +96,27 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.bakery_dining_rounded),
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => CartPage()));
-          }),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+              heroTag: 1,
+              child: Icon(Icons.hail),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => OrderHistoryPage(
+                        userId: FirebaseAuth.instance.currentUser!.email
+                            .toString())));
+              }),
+          FloatingActionButton(
+              heroTag: 2,
+              child: Icon(Icons.bakery_dining_rounded),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => CartPage()));
+              }),
+        ],
+      ),
     );
   }
 }

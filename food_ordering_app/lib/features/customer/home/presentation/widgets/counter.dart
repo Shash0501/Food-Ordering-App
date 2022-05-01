@@ -57,7 +57,6 @@ class _CounterWidgetState extends State<CounterWidget> {
                           itemName: widget.menuItem.itemName);
                       box.put(MI.itemId, newCurrentOrder);
                     } else {
-                      print("deleting item");
                       box.delete(MI.itemId);
                     }
                   }
@@ -119,6 +118,7 @@ class _CounterWidgetState extends State<CounterWidget> {
                         description: widget.menuItem.description,
                         restaurantId: widget.menuItem.restaurantId,
                         itemName: widget.menuItem.itemName);
+
                     box.put(MI.itemId, newCurrentOrder);
                   }
                 });

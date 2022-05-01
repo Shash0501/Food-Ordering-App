@@ -16,26 +16,12 @@ Future<bool> cacheRestaurantIds() async {
       .get()
       .then((value) {
     value.docs.forEach((element) {
-      print(element.data());
-      print(element.id);
       box.put(
           element.id,
           Id(
               id: element.id,
               name: element.data()["restaurantName"],
               rating: element.data()["rating"].toString()));
-      // FirebaseFirestore.instance
-      //     .collection("restaurants")
-      //     .doc(element.id)
-      //     .get()
-      //     .then((value) {
-      //   box.put(
-      //       element.id,
-      //       Id(
-      //           id: element.id,
-      //           name: value.data()!["restaurantName"],
-      //           rating: value.data()!["rating"].toString()));
-      // });
     });
   });
   print("the box lenght is ${box.length}");
