@@ -67,7 +67,7 @@ class _OrderCardState extends State<OrderCardC> {
                 children: [
                   Expanded(child: Text('ID: ${orderListing.orderId}')),
                   Text(
-                      '${orderListing.orderDate.hour}:${orderListing.orderDate.minute} PM')
+                      '${orderListing.orderDate.toDate().hour}:${orderListing.orderDate.toDate().minute} PM')
                 ],
               ),
             ),
