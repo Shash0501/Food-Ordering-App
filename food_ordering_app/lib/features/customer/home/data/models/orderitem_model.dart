@@ -55,7 +55,7 @@ class OrderItemModel extends OrderItem {
       'orderId': orderId,
       'customerId': customerId,
       'restaurantId': restaurantId,
-      'orderDate': orderDate.toDate().toIso8601String(),
+      'orderDate': orderDate,
       'totalAmount': totalAmount,
       'ratingGiven': ratingGiven,
       'status': status,

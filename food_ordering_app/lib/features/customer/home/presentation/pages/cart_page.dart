@@ -43,7 +43,7 @@ class _CartPageState extends State<CartPage> {
                   restaurantId: restaurantId,
                   orderDate: Timestamp.now(),
                   totalAmount: totalAmount(),
-                  ratingGiven: 0,
+                  ratingGiven: 2,
                   status: "Placed",
                   order: getOrderList(),
                   pincode: 314122,

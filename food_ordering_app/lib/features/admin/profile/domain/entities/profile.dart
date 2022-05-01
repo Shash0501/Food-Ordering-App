@@ -7,6 +7,7 @@ class RestaurantProfile extends Equatable {
   final String phone;
   final String email;
   final double rating;
+  final int nratings;
   RestaurantProfile({
     required this.restaurantId,
     required this.restaurantName,
@@ -14,16 +15,11 @@ class RestaurantProfile extends Equatable {
     required this.phone,
     required this.email,
     required this.rating,
+    required this.nratings,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [
-        restaurantId,
-        restaurantName,
-        address,
-        phone,
-        email,
-        rating,
-      ];
+  List<Object?> get props =>
+      [restaurantId, restaurantName, address, phone, email, rating, nratings];
 }

@@ -5,6 +5,7 @@ import 'package:food_ordering_app/features/admin/order/presentation/pages/single
 import 'dart:developer' as developer;
 
 import '../../../../admin/order/data/models/orderitem_model.dart';
+import '../pages/single_order_page_customer.dart';
 
 // import '../../data/models/orderitem_model.dart';
 
@@ -57,7 +58,7 @@ class _OrderCardState extends State<OrderCardC> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SingleOrderPage(
+                  builder: (context) => SingleOrderPageC(
                         orderItem: orderListing,
                       )));
             },
@@ -123,38 +124,10 @@ class _OrderCardState extends State<OrderCardC> {
               ),
             ),
           ),
-          if (orderStatus == 'Placed')
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                  ),
-                  onPressed: () {
-                    orders
-                        .doc(orderListing.orderId)
-                        .update({'status': 'Accepted'})
-                        .then((value) => print("Yay"))
-                        .catchError((e) => print(e));
-                  },
-                  child: Text('ACCEPT', style: TextStyle(letterSpacing: 1.5)),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  onPressed: () {},
-                  child: Text('DECLINE', style: TextStyle(letterSpacing: 1.5)),
-                )
-              ],
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(child: Text('The order has been $orderStatus')),
-            )
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(child: Text('The order has been $orderStatus')),
+          )
         ],
       ),
     ));

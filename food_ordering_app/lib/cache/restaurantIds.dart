@@ -24,7 +24,6 @@ Future<bool> cacheRestaurantIds() async {
               rating: element.data()["rating"].toString()));
     });
   });
-  print("the box lenght is ${box.length}");
   return true;
 }
 

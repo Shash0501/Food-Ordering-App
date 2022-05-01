@@ -20,7 +20,7 @@ class OrderDetails extends StatelessWidget {
             parameter: "Order Number", value: orderItem.orderId.toString()),
         const OrderDetailItem(parameter: "Payment", value: "Paid : Using UPI"),
         OrderDetailItem(
-            parameter: "Date", value: orderItem.orderDate.toString())
+            parameter: "Date", value: orderItem.orderDate.toDate().toString())
       ],
     );
   }
