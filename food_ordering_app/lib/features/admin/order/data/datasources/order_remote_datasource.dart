@@ -38,6 +38,7 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
     List<MenuItemModel> orderItem = [];
     try {
       for (var element in itemIds) {
+        print(element);
         await FirebaseFirestore.instance
             .collection("restaurants")
             .doc(restaurantId)
