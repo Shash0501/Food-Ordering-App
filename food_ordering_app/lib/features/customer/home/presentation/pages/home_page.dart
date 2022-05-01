@@ -18,7 +18,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   @override
   void initState() {
     var box = Hive.box<Id>("restaurantIds");
-    BlocProvider.of<HomepageBloc>(context).add(Menu());
+    BlocProvider.of<HomepageBloc>(context).add(CacheRestaurantIds());
     super.initState();
   }
 
@@ -47,6 +47,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           BlocBuilder<HomepageBloc, HomepageState>(
             builder: (context, state) {
               if (state is MenuLoaded) {
+                print(state.menu.length);
                 return Expanded(
                   child: ListView.builder(
                       itemCount: state.menu.length,
@@ -70,7 +71,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                 );
               } else if (state is Loading) {
                 return Center(child: CircularProgressIndicator());
-              } else {
+              }else if(state is DataCachedSuccesfully){
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  BlocProvider.of<HomepageBloc>(context).add(Menu());
+                });
+                return Container();
+              }
+               else {
                 return Center(child: Text("Some Error Occured"));
               }
             },

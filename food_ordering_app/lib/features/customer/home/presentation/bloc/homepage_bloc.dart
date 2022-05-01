@@ -17,6 +17,7 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     on<HomepageEvent>((event, emit) async {
       if (event is CacheRestaurantIds) {
         cacheRestaurantIds();
+        emit(DataCachedSuccesfully());
       } else if (event is RestaurantMenu) {
         gmr.getMenuR GetMenuR = gmr.getMenuR(
             repository: HomeRepositoryImpl(
