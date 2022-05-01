@@ -24,10 +24,15 @@ class _CounterWidgetState extends State<CounterWidget> {
   Widget build(BuildContext context) {
     MenuItemModel MI = widget.menuItem;
     return Container(
-        height: 40,
-        width: 110,
-        decoration: BoxDecoration(color: Colors.blue),
+        height: 37,
+        width: 115,
+        decoration: BoxDecoration(
+          color: Colors.red.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.red),
+        ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               icon: const Icon(Icons.remove),
@@ -63,14 +68,11 @@ class _CounterWidgetState extends State<CounterWidget> {
                 });
               },
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: ValueListenableBuilder<Box>(
-                  valueListenable: box.listenable(),
-                  builder: (buildContext, box, _) {
-                    return Text(box.get(MI.itemId)?.quantity.toString() ?? "0");
-                  }),
-            ),
+            ValueListenableBuilder<Box>(
+                valueListenable: box.listenable(),
+                builder: (buildContext, box, _) {
+                  return Text(box.get(MI.itemId)?.quantity.toString() ?? "0");
+                }),
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {

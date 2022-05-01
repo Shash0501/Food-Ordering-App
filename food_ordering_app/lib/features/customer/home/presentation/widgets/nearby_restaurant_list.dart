@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/pages/create_order_page.dart';
 import 'package:food_ordering_app/features/customer/home/presentation/widgets/restaurant_card.dart';
 
 class NearbyRestaurantList extends StatelessWidget {
@@ -24,7 +25,12 @@ class NearbyRestaurantList extends StatelessWidget {
               shrinkWrap: true,
               itemCount: 5,
               itemBuilder: (context, index) {
-                return RestaurantCard();
+                return RestaurantCard(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreateOrderPage()));
+                  },
+                );
               }),
         ],
       ),
