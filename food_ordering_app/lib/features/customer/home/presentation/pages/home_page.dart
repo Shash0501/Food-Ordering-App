@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../../cache/ids.dart';
@@ -27,6 +29,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Customer Home Page'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () async {
+              final googleSignIn = GoogleSignIn();
+              await googleSignIn.disconnect();
+              FirebaseAuth.instance.signOut();
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -71,13 +83,12 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                 );
               } else if (state is Loading) {
                 return Center(child: CircularProgressIndicator());
-              }else if(state is DataCachedSuccesfully){
+              } else if (state is DataCachedSuccesfully) {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
                   BlocProvider.of<HomepageBloc>(context).add(Menu());
                 });
                 return Container();
-              }
-               else {
+              } else {
                 return Center(child: Text("Some Error Occured"));
               }
             },
