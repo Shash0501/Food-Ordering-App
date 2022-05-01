@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/admin/menu/data/models/menuitem_model.dart';
@@ -21,6 +23,7 @@ class SingleOrderPage extends StatefulWidget {
 class _SingleOrderPageState extends State<SingleOrderPage> {
   @override
   void initState() {
+    print("executing initstate");
     List<String> itemIds = [];
     for (var element in widget.orderItem.order) {
       itemIds.add(element["itemId"]);
@@ -32,6 +35,11 @@ class _SingleOrderPageState extends State<SingleOrderPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print(widget.orderItem.order);
     return SafeArea(
@@ -39,6 +47,15 @@ class _SingleOrderPageState extends State<SingleOrderPage> {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is OrderInitial) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
+              List<String> itemIds = [];
+              for (var element in widget.orderItem.order) {
+                itemIds.add(element["itemId"]);
+              }
+              BlocProvider.of<OrderBloc>(context).add(LoadItemDetails(
+                  itemId: itemIds,
+                  restaurantId: widget.orderItem.restaurantId));
+            });
             return const Center(child: CircularProgressIndicator());
           }
           if (state is OrderItemLoaded) {

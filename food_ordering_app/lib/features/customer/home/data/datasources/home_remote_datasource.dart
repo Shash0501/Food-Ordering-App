@@ -52,8 +52,6 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
             .get()
             .then((value) {
           value.docs.forEach((element1) {
-            print(element1.data());
-            print("Asd");
             // ?? Here I have omitted the condition for category
             // ?? This will return all the items of all the restaurants
             if (element1.data().isNotEmpty) {

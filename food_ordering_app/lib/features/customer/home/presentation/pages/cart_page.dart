@@ -32,11 +32,11 @@ class _CartPageState extends State<CartPage> {
           IconButton(
             icon: const Icon(Icons.airplane_ticket),
             onPressed: () {
+              var box = Hive.box<CurrentOrder>("currentOrder");
               List<dynamic> itemIds =
                   Hive.box<CurrentOrder>("currentOrder").keys.toList();
-              String restaurantId = Hive.box<CurrentOrder>("currentOrder")
-                  .get(itemIds[0])!
-                  .restaurantId;
+              String restaurantId = box.get(itemIds[0])!.restaurantId;
+
               OrderItemModel order = OrderItemModel(
                   orderId: uuid.v1(),
                   customerId:
@@ -52,6 +52,7 @@ class _CartPageState extends State<CartPage> {
 
               BlocProvider.of<HomepageBloc>(context)
                   .add(PlaceOrderEvent(order: order));
+              box.clear();
             },
           ),
         ],
