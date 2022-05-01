@@ -28,3 +28,12 @@ class CategoryMenu extends HomepageEvent {
 }
 
 class Menu extends HomepageEvent {}
+
+class PlaceOrderEvent extends HomepageEvent {
+  final OrderItemModel order;
+
+  const PlaceOrderEvent({required this.order});
+
+  @override
+  List<Object> get props => [order];
+}

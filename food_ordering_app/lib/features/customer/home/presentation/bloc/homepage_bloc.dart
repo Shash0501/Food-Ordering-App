@@ -5,8 +5,10 @@ import 'package:food_ordering_app/features/customer/home/data/repositories/home_
 
 import '../../data/datasources/home_remote_datasource.dart';
 import '../../data/models/menuitem_model.dart';
+import '../../data/models/orderitem_model.dart';
 import '../../domain/usecases/getmenubyrestaurants.dart' as gmr;
 import '../../domain/usecases/getmenu.dart' as gmc;
+import '../../domain/usecases/placeorder.dart' as po;
 part 'homepage_event.dart';
 part 'homepage_state.dart';
 
@@ -36,6 +38,16 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
           print(value);
           value.fold((failure) => print(failure),
               (value) => emit(MenuLoaded(menu: value)));
+        });
+      } else if (event is PlaceOrderEvent) {
+        po.placeOrder placeOrder = po.placeOrder(
+            repository: HomeRepositoryImpl(
+                remoteDataSource: HomeRemoteDataSourceImpl()));
+
+        await placeOrder.call(po.Params(order: event.order)).then((value) {
+          print(value);
+          value.fold(
+              (failure) => print(failure), (value) => print("order placed"));
         });
       }
     });
