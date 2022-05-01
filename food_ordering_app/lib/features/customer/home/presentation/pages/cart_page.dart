@@ -26,10 +26,6 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> itemIds =
-        Hive.box<CurrentOrder>("currentOrder").keys.toList();
-    String restaurantId =
-        Hive.box<CurrentOrder>("currentOrder").get(itemIds[0])!.restaurantId;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Cart'),
@@ -37,6 +33,11 @@ class _CartPageState extends State<CartPage> {
           IconButton(
             icon: const Icon(Icons.airplane_ticket),
             onPressed: () {
+              List<dynamic> itemIds =
+                  Hive.box<CurrentOrder>("currentOrder").keys.toList();
+              String restaurantId = Hive.box<CurrentOrder>("currentOrder")
+                  .get(itemIds[0])!
+                  .restaurantId;
               OrderItemModel order = OrderItemModel(
                   orderId: uuid.v1(),
                   customerId:
@@ -59,7 +60,8 @@ class _CartPageState extends State<CartPage> {
       body: ValueListenableBuilder<Box>(
           valueListenable: Hive.box<CurrentOrder>("currentOrder").listenable(),
           builder: (buildContext, box, _) {
-            print("hello");
+            List<dynamic> itemIds =
+                Hive.box<CurrentOrder>("currentOrder").keys.toList();
             print(box.length);
             return ListView.builder(
                 itemCount: box.length,

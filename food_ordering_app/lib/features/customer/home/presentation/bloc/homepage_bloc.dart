@@ -16,7 +16,8 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
   HomepageBloc() : super(HomepageInitial()) {
     on<HomepageEvent>((event, emit) async {
       if (event is CacheRestaurantIds) {
-        cacheRestaurantIds();
+        emit(Loading());
+        await cacheRestaurantIds();
         emit(DataCachedSuccesfully());
       } else if (event is RestaurantMenu) {
         gmr.getMenuR GetMenuR = gmr.getMenuR(
@@ -29,6 +30,8 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
         });
       } else if (event is Menu) {
         emit(Loading());
+        // await cacheRestaurantIds();
+
         gmc.getMenu GetMenu = gmc.getMenu(
             repository: HomeRepositoryImpl(
                 remoteDataSource: HomeRemoteDataSourceImpl()));
