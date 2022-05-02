@@ -50,8 +50,11 @@ class _OrderPageState extends State<OrderPage> {
               itemBuilder: (context, index) {
                 return OrderCard(order: state.orders[index]);
               });
+        } else if (state is Loading) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(child: Text("No Orders"));
         }
-        return Container();
       },
     ));
   }

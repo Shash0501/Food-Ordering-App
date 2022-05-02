@@ -32,7 +32,7 @@ class _OrderCardState extends State<OrderCard> {
   @override
   Widget build(BuildContext context) {
     Map orderStatusColors = {
-      'Placed': Color.fromARGB(255, 97, 97, 97),
+      'Pending': Color.fromARGB(255, 97, 97, 97),
       'Accepted': Colors.blueAccent,
       'Declined': Colors.red,
       'Ready': Colors.orange,
@@ -70,7 +70,7 @@ class _OrderCardState extends State<OrderCard> {
           ),
           Row(
             children: [
-              if (orderStatus != 'Declined' && orderStatus != 'Placed')
+              if (orderStatus != 'Declined' && orderStatus != 'Pending')
                 DropdownButton<String>(
                   value: orderStatus,
                   onChanged: (String? newValue) {
@@ -183,7 +183,7 @@ class _OrderCardState extends State<OrderCard> {
               ),
             ),
           ),
-          if (orderStatus == 'Placed')
+          if (orderStatus == 'Pending')
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

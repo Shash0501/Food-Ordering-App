@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/customer/home/presentation/widgets/nearby_restaurant_list.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../../cache/ids.dart';
@@ -60,7 +61,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             children: [
               Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: ListTile(
                       title: Text(
                         'Dodda Kopla',
@@ -77,10 +78,12 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      //TODO Open User Profile on button click
+                    onPressed: () async {
+                      final googleSignIn = GoogleSignIn();
+                      await googleSignIn.disconnect();
+                      FirebaseAuth.instance.signOut();
                     },
-                    icon: CircleAvatar(
+                    icon: const CircleAvatar(
                       child: Icon(Icons.account_circle),
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.red,
@@ -88,8 +91,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   )
                 ],
               ),
-              PromotionalBanner(),
-              CategorySelector(),
+              const PromotionalBanner(),
+              const CategorySelector(),
               NearbyRestaurantList(),
             ],
           ),
