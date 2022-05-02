@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_bloc.dart';
 import 'package:food_ordering_app/features/admin/profile/data/datasources/profile_remote_datasource.dart';
 import 'package:food_ordering_app/features/admin/profile/data/repositories/profile_repository_impl.dart';
 
@@ -13,6 +14,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial()) {
     on<ProfileEvent>((event, emit) async {
       if (event is LoadProfile) {
+        emit(Loading());
         gp.LoadProfile loadProfile = gp.LoadProfile(ProfileRepositoryImpl(
             remoteDataSource: ProfileRemoteDataSourceImpl()));
 
