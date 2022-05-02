@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/authentication/bloc/sign_in_bloc.dart';
+import 'package:food_ordering_app/cache/restaurantIds.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -25,6 +26,7 @@ Future main() async {
   Hive.registerAdapter(CurrentOrderAdapter());
   await Hive.openBox<Id>('restaurantIds');
   await Hive.openBox<CurrentOrder>('currentOrder');
+  await cacheRestaurantIds();
   runApp(const MyApp());
 }
 

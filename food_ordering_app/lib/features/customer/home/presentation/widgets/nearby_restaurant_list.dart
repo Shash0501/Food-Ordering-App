@@ -57,9 +57,10 @@ class _NearbyRestaurantListState extends State<NearbyRestaurantList> {
                         return RestaurantCard(
                           restaurantProfile: snapshot.data[index],
                           onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateOrderPage()));
-                  },
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CreateOrderPage(
+                                    restaurantProfile: snapshot.data[index])));
+                          },
                         );
                       });
                 } else if (snapshot.connectionState ==

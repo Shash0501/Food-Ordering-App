@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 import '../../data/models/menuitem_model.dart';
 import '../../data/models/orderitem_model.dart';
 import '../widgets/counter.dart';
+import 'create_order_page.dart';
 
 class CartPage extends StatefulWidget {
   CartPage({Key? key}) : super(key: key);
@@ -75,17 +76,16 @@ class _CartPageState extends State<CartPage> {
                       isVeg: currentOrder.isVeg,
                       itemId: currentOrder.itemId,
                       restaurantId: currentOrder.restaurantId);
-                  return Card(
-                    child: ListTile(
-                      tileColor: Colors.amber,
-                      title: Text(currentOrder.itemName),
-                      subtitle: Text(currentOrder.restaurantId.substring(0, 4)),
-                      trailing: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                        child: CounterWidget(
-                          menuItem: m,
-                        ),
-                      ),
+                  return CustomisableMenuItem(
+                    menuItem: MenuItemModel(
+                      category: currentOrder.category,
+                      isAvailable: currentOrder.isAvailable,
+                      itemId: currentOrder.itemId,
+                      itemName: currentOrder.itemName,
+                      description: currentOrder.description,
+                      isVeg: currentOrder.isVeg,
+                      price: currentOrder.price,
+                      restaurantId: currentOrder.restaurantId,
                     ),
                   );
                 });

@@ -91,43 +91,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               PromotionalBanner(),
               CategorySelector(),
               NearbyRestaurantList(),
-              BlocBuilder<HomepageBloc, HomepageState>(
-                builder: (context, state) {
-                  if (state is MenuLoaded) {
-                    print(state.menu.length);
-                    return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.menu.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              tileColor: Colors.amber,
-                              title: Text(state.menu[index].itemName),
-                              subtitle: Text(state.menu[index].restaurantId
-                                  .substring(0, 4)),
-                              trailing: Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
-                                child: CounterWidget(
-                                  menuItem: state.menu[index],
-                                ),
-                              ),
-                            ),
-                          );
-                        });
-                  } else if (state is Loading) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (state is DataCachedSuccesfully) {
-                    WidgetsBinding.instance!.addPostFrameCallback((_) {
-                      BlocProvider.of<HomepageBloc>(context).add(Menu());
-                    });
-                    return Container();
-                  } else {
-                    return Center(child: Text("Some Error Occured"));
-                  }
-                },
-              ),
             ],
           ),
         ),

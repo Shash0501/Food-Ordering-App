@@ -20,5 +20,13 @@ class MenuLoaded extends HomepageState {
 
 class Loading extends HomepageState {}
 
+class DataCachedSuccesfully extends HomepageState {}
 
-class DataCachedSuccesfully extends HomepageState{}
+class Error extends HomepageState {
+  final String message;
+
+  const Error({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

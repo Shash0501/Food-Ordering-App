@@ -1,12 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/features/admin/profile/data/models/profile_model.dart';
 
 import '../../data/models/menuitem_model.dart';
+import '../bloc/homepage_bloc.dart';
 import '../widgets/counter.dart';
+import 'cart_page.dart';
 
 class CreateOrderPage extends StatefulWidget {
-  const CreateOrderPage({Key? key}) : super(key: key);
+  RestaurantProfileModel restaurantProfile;
+  CreateOrderPage({Key? key, required this.restaurantProfile})
+      : super(key: key);
 
   @override
   State<CreateOrderPage> createState() => _CreateOrderPageState();
@@ -35,7 +41,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Red Rock',
+                              widget.restaurantProfile.restaurantName,
                               style: TextStyle(
                                 fontSize: 20,
                                 letterSpacing: 1.2,
@@ -43,14 +49,14 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                               ),
                             ),
                             Text(
-                              'Burger, Fastfood, Apples',
+                              widget.restaurantProfile.email,
                               style: TextStyle(color: Colors.grey),
                             ),
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: 10, right: 30),
                               child: Text(
-                                'T5 901 Rps Savana Omegle High street nitk surthkal in sex in the beach',
+                                widget.restaurantProfile.address,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,
@@ -66,7 +72,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                             height: 40,
                             width: 65,
                             child: DecoratedBox(
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '3.4★',
                                   style: TextStyle(
@@ -75,7 +81,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                 ),
                               ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   topRight: Radius.circular(10),
                                   topLeft: Radius.circular(10),
                                 ),
@@ -98,7 +104,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                               ),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey[300]!),
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(10),
                                   bottomRight: Radius.circular(10),
                                 ),
@@ -112,12 +118,12 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 10,
                 color: Colors.grey,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text(
                   'Recommended',
                   style: TextStyle(
@@ -127,27 +133,55 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                   ),
                 ),
               ),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return CustomisableMenuItem(
-                      menuItem: MenuItemModel(
-                          category: 'Dessert',
-                          isAvailable: true,
-                          itemId: "21343",
-                          itemName: "Ice Cream",
-                          description:
-                              "A dessert that will make your ass go wooo when you eat it ",
-                          isVeg: true,
-                          price: 300,
-                          restaurantId: "hksdhfg"),
+              BlocConsumer<HomepageBloc, HomepageState>(
+                listener: (context, state) {
+                  if (state is HomepageInitial) {
+                    print("---------------");
+                    BlocProvider.of<HomepageBloc>(context).add(
+                        RestaurantMenu(widget.restaurantProfile.restaurantId));
+                  }
+                },
+                builder: (context, state) {
+                  if (state is MenuLoaded) {
+                    return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.menu.length,
+                        itemBuilder: (context, index) {
+                          return CustomisableMenuItem(
+                            menuItem: MenuItemModel(
+                              category: state.menu[index].category,
+                              isAvailable: state.menu[index].isAvailable,
+                              itemId: state.menu[index].itemId,
+                              itemName: state.menu[index].itemName,
+                              description: state.menu[index].description,
+                              isVeg: state.menu[index].isVeg,
+                              price: state.menu[index].price,
+                              restaurantId: state.menu[index].restaurantId,
+                            ),
+                          );
+                        });
+                  } else if (state is Loading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
-                  }),
+                  } else {
+                    return Center(
+                      child: Text("Error"),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+            heroTag: 2,
+            child: Icon(Icons.bakery_dining_rounded),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CartPage()));
+            }),
       ),
     );
   }

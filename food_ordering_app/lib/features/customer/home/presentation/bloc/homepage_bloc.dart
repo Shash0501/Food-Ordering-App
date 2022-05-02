@@ -27,6 +27,9 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
         await GetMenuR.call(gmr.Params(restaurantId: event.restaurantId))
             .then((value) {
           print(value);
+          value.fold(
+              (failure) => emit(Error(message: "Error in laoding the menu")),
+              (menu) => emit(MenuLoaded(menu: menu)));
         });
       } else if (event is Menu) {
         emit(Loading());
