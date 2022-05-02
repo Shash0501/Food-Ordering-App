@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/cache/order.dart';
-import 'package:food_ordering_app/features/customer/home/presentation/bloc/homepage_bloc.dart';
+import 'package:food_ordering_app/features/customer/home/data/models/orderitem_model.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/pages/checkout_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/models/menuitem_model.dart';
-import '../../data/models/orderitem_model.dart';
-import '../widgets/counter.dart';
+import '../bloc/homepage_bloc.dart';
 import 'create_order_page.dart';
 
 class CartPage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _CartPageState extends State<CartPage> {
                   orderDate: Timestamp.now(),
                   totalAmount: totalAmount(),
                   ratingGiven: 2,
-                  status: "Placed",
+                  status: "Pending",
                   order: getOrderList(),
                   pincode: 314122,
                   address: "asdasdasd asdvhv a jsvdj hasdjb");
@@ -63,32 +63,64 @@ class _CartPageState extends State<CartPage> {
             List<dynamic> itemIds =
                 Hive.box<CurrentOrder>("currentOrder").keys.toList();
             print(box.length);
-            return ListView.builder(
-                itemCount: box.length,
-                itemBuilder: (context, index) {
-                  CurrentOrder currentOrder = box.get(itemIds[index])!;
-                  MenuItemModel m = MenuItemModel(
-                      category: currentOrder.category,
-                      itemName: currentOrder.itemName,
-                      price: currentOrder.price,
-                      description: currentOrder.description,
-                      isAvailable: currentOrder.isAvailable,
-                      isVeg: currentOrder.isVeg,
-                      itemId: currentOrder.itemId,
-                      restaurantId: currentOrder.restaurantId);
-                  return CustomisableMenuItem(
-                    menuItem: MenuItemModel(
-                      category: currentOrder.category,
-                      isAvailable: currentOrder.isAvailable,
-                      itemId: currentOrder.itemId,
-                      itemName: currentOrder.itemName,
-                      description: currentOrder.description,
-                      isVeg: currentOrder.isVeg,
-                      price: currentOrder.price,
-                      restaurantId: currentOrder.restaurantId,
-                    ),
-                  );
-                });
+            return Column(
+              children: [
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: box.length,
+                    itemBuilder: (context, index) {
+                      CurrentOrder currentOrder = box.get(itemIds[index])!;
+                      MenuItemModel m = MenuItemModel(
+                          category: currentOrder.category,
+                          itemName: currentOrder.itemName,
+                          price: currentOrder.price,
+                          description: currentOrder.description,
+                          isAvailable: currentOrder.isAvailable,
+                          isVeg: currentOrder.isVeg,
+                          itemId: currentOrder.itemId,
+                          restaurantId: currentOrder.restaurantId);
+                      return CustomisableMenuItem(
+                        menuItem: MenuItemModel(
+                          category: currentOrder.category,
+                          isAvailable: currentOrder.isAvailable,
+                          itemId: currentOrder.itemId,
+                          itemName: currentOrder.itemName,
+                          description: currentOrder.description,
+                          isVeg: currentOrder.isVeg,
+                          price: currentOrder.price,
+                          restaurantId: currentOrder.restaurantId,
+                        ),
+                      );
+                    }),
+                ElevatedButton(
+                  onPressed: () async {
+                    String restaurantId = box.get(itemIds[0])!.restaurantId;
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CheckoutPage(
+                          orderItem: OrderItemModel(
+                              orderId: uuid.v1(),
+                              customerId: FirebaseAuth
+                                  .instance.currentUser!.email
+                                  .toString(),
+                              restaurantId: restaurantId,
+                              orderDate: Timestamp.now(),
+                              totalAmount: totalAmount(),
+                              ratingGiven: 2,
+                              status: "Pending",
+                              order: getOrderList(),
+                              pincode: 314122,
+                              address: "asdasdasd asdvhv a jsvdj hasdjb"),
+                        ),
+                      ),
+                    );
+
+                    Navigator.pop(context);
+                  },
+                  child: Text("Checkout"),
+                )
+              ],
+            );
           }),
     );
   }

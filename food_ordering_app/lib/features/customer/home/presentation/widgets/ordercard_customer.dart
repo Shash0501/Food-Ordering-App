@@ -1,8 +1,7 @@
+import 'dart:developer' as developer;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/features/admin/order/presentation/pages/single_order_page.dart';
-
-import 'dart:developer' as developer;
 
 import '../../../../admin/order/data/models/orderitem_model.dart';
 import '../pages/single_order_page_customer.dart';
@@ -35,6 +34,7 @@ class _OrderCardState extends State<OrderCardC> {
 
   @override
   Widget build(BuildContext context) {
+    print(orderListing.orderDate.toDate());
     Map orderStatusColors = {
       'Pending': Color.fromARGB(255, 97, 97, 97),
       'Accepted': Colors.blueAccent,
@@ -68,7 +68,7 @@ class _OrderCardState extends State<OrderCardC> {
                 children: [
                   Expanded(child: Text('ID: ${orderListing.orderId}')),
                   Text(
-                      '${orderListing.orderDate.toDate().hour}:${orderListing.orderDate.toDate().minute} PM')
+                      '${orderListing.orderDate.toDate().toString().substring(0, 19)}')
                 ],
               ),
             ),
@@ -110,14 +110,14 @@ class _OrderCardState extends State<OrderCardC> {
                   visualDensity: VisualDensity(vertical: -4),
                   contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   title: Text(
-                      '${orderItem['quantity']} x ${orderItem['itemId'].substring(1, 4)}',
+                      '${orderItem['quantity']} x ${orderItem['itemName']}',
                       style: TextStyle(letterSpacing: 2)),
                 );
               }),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              'Total Bill: $totalAmount',
+              'Total Bill: ${widget.order.totalAmount}',
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 20,
@@ -126,7 +126,7 @@ class _OrderCardState extends State<OrderCardC> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Center(child: Text('The order has been $orderStatus')),
+            child: Center(child: Text((orderStatus != 'Pending' ? 'The order has been $orderStatus' : 'The order is $orderStatus'))),
           )
         ],
       ),

@@ -1,7 +1,6 @@
-import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:developer' as developer;
 
 import '../../../../customer/home/domain/entities/orderitem.dart';
 
@@ -44,7 +43,7 @@ class OrderItemModel extends OrderItem {
       orderId: json['orderId'],
       customerId: json['customerId'],
       restaurantId: json['restaurantId'],
-      orderDate: Timestamp.now(),
+      orderDate: json['orderDate'],
       totalAmount: json['totalAmount'].toDouble(),
       ratingGiven: json['ratingGiven'].toDouble(),
       status: json['status'],

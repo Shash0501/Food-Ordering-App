@@ -1,9 +1,10 @@
+import 'dart:developer' as developer;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/orderitem_model.dart';
 import '../pages/single_order_page.dart';
-import 'dart:developer' as developer;
 
 class OrderCard extends StatefulWidget {
   OrderItemModel order;
@@ -77,7 +78,10 @@ class _OrderCardState extends State<OrderCard> {
                     setState(() {
                       print(orderStatus);
                       orderStatus = newValue!;
-                      print(orderStatus);
+                      FirebaseFirestore.instance
+                          .collection('orders')
+                          .doc(widget.order.orderId)
+                          .update({'status': newValue});
                     });
                   },
                   items: dropDownorderStatusColors.keys
@@ -213,7 +217,10 @@ class _OrderCardState extends State<OrderCard> {
           else
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Center(child: Text('The order has been $orderStatus')),
+              child: Center(
+                  child: Text((orderStatus != 'Pending'
+                      ? 'The order has been $orderStatus'
+                      : 'The order is $orderStatus'))),
             )
         ],
       ),

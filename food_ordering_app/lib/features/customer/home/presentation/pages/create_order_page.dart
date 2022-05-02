@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/admin/profile/data/models/profile_model.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/pages/order_history_page.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -191,9 +193,14 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
               children: [
                 FloatingActionButton(
                   // Your actual Fab
-                  onPressed: () {
-                    Navigator.of(context).push(
+                  onPressed: () async {
+                    await Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => CartPage()));
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => OrderHistoryPage(
+                            userId: FirebaseAuth.instance.currentUser!.email
+                                .toString())));
                   },
                   child: Icon(Icons.add),
                   backgroundColor: Colors.deepOrange,
