@@ -25,7 +25,6 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           .collection("menu")
           .get()
           .then((value) {
-        print(value.docs.length);
         value.docs.forEach((element) {
           orders.add(MenuItemModel.fromJson(element.data(), restaurantId));
         });

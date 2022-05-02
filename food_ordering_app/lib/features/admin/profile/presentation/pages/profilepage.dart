@@ -180,6 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             phone.text = "";
                             hasEdited = false;
                             BlocProvider.of<ProfileBloc>(context)
+                                // ignore: invalid_use_of_visible_for_testing_member
                                 .emit(Loading());
                             BlocProvider.of<ProfileBloc>(context).add(
                                 LoadProfile(restaurantId: widget.restaurantId));

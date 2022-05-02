@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/admin/profile/data/models/profile_model.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../../../cache/order.dart';
 import '../../data/models/menuitem_model.dart';
 import '../bloc/homepage_bloc.dart';
 import '../widgets/counter.dart';
@@ -19,6 +22,14 @@ class CreateOrderPage extends StatefulWidget {
 }
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    BlocProvider.of<HomepageBloc>(context)
+        .add(RestaurantMenu(widget.restaurantProfile.restaurantId));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,9 +83,9 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                             height: 40,
                             width: 65,
                             child: DecoratedBox(
-                              child: const Center(
+                              child: Center(
                                 child: Text(
-                                  '3.4★',
+                                  '${widget.restaurantProfile.rating}★',
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -95,7 +106,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                             child: DecoratedBox(
                               child: Center(
                                 child: Text(
-                                  '3405 Ratings',
+                                  '${widget.restaurantProfile.nratings} Ratings',
                                   style: TextStyle(
                                     color: Colors.grey[800],
                                     fontSize: 9,
@@ -134,15 +145,13 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                 ),
               ),
               BlocConsumer<HomepageBloc, HomepageState>(
-                listener: (context, state) {
-                  if (state is HomepageInitial) {
-                    print("---------------");
-                    BlocProvider.of<HomepageBloc>(context).add(
-                        RestaurantMenu(widget.restaurantProfile.restaurantId));
-                  }
-                },
+                listener: (context, state) {},
                 builder: (context, state) {
                   if (state is MenuLoaded) {
+                    if (state.menu.length == 0)
+                      return Center(
+                        child: Text('No Items Available'),
+                      );
                     return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -167,7 +176,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     );
                   } else {
                     return Center(
-                      child: Text("Error"),
+                      child: Text(""),
                     );
                   }
                 },
@@ -175,13 +184,62 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-            heroTag: 2,
-            child: Icon(Icons.bakery_dining_rounded),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CartPage()));
-            }),
+        floatingActionButton: Container(
+          child: FittedBox(
+            child: Stack(
+              alignment: Alignment(1.4, -1.5),
+              children: [
+                FloatingActionButton(
+                  // Your actual Fab
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CartPage()));
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: Colors.deepOrange,
+                ),
+                ValueListenableBuilder<Box>(
+                    valueListenable:
+                        Hive.box<CurrentOrder>("currentOrder").listenable(),
+                    builder: (buildContext, box, _) {
+                      if (box.length == 0) return Container();
+
+                      return Container(
+                        // This is your Badge
+                        child: Center(
+                          // Here you can put whatever content you want inside your Badge
+                          child: Text(box.length.toString(),
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        constraints:
+                            const BoxConstraints(minHeight: 32, minWidth: 32),
+                        decoration: BoxDecoration(
+                          // This controls the shadow
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                color: Colors.black.withAlpha(50))
+                          ],
+                          borderRadius: BorderRadius.circular(16),
+                          color:
+                              Colors.blue, // This would be color of the Badge
+                        ),
+                      );
+                    }),
+              ],
+            ),
+          ),
+        ),
+
+        // floatingActionButton: FloatingActionButton(
+        //     heroTag: 2,
+        //     child: Icon(Icons.bakery_dining_rounded),
+        //     onPressed: () {
+        //       Navigator.of(context)
+        //           .push(MaterialPageRoute(builder: (context) => CartPage()));
+        //     }),
       ),
     );
   }
