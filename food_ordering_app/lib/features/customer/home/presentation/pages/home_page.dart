@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/pages/profile_page_c.dart';
 import 'package:food_ordering_app/features/customer/home/presentation/widgets/nearby_restaurant_list.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
@@ -72,16 +73,27 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   ),
                   IconButton(
                     onPressed: () async {
-                      final googleSignIn = GoogleSignIn();
-                      await googleSignIn.disconnect();
-                      FirebaseAuth.instance.signOut();
+                      await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfilePageC()));
                     },
                     icon: const CircleAvatar(
                       child: Icon(Icons.account_circle),
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.red,
                     ),
-                  )
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      final googleSignIn = GoogleSignIn();
+                      await googleSignIn.disconnect();
+                      FirebaseAuth.instance.signOut();
+                    },
+                    icon: const CircleAvatar(
+                      child: Icon(Icons.logout),
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.red,
+                    ),
+                  ),
                 ],
               ),
               const PromotionalBanner(),

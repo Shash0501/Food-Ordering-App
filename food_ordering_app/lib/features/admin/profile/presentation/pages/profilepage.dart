@@ -62,12 +62,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, state) {
-        if (state is Loading) {
-          return Center(child: CircularProgressIndicator());
-        } else if (state is ProfileLoaded) {
-          return Scaffold(
+    return Scaffold(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          if (state is Loading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is ProfileLoaded) {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -106,6 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.fromLTRB(8.0, 140, 8.0, 0),
                     child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
@@ -148,7 +151,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              bottomSheet: TextButton(
+              bottomSheet: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 160,
+                ),
+                child: ElevatedButton(
                   onPressed: !hasEdited
                       ? null
                       : () {
@@ -186,11 +193,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                 LoadProfile(restaurantId: widget.restaurantId));
                           });
                         },
-                  child: Text("SAVE")));
-        }
-        return Container();
-      },
-    ));
+                  child: Text("SAVE"),
+                ),
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
+    );
   }
 }
 
