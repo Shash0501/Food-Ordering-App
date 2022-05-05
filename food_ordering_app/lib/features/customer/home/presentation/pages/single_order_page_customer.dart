@@ -137,6 +137,16 @@ class _SingleOrderPageCState extends State<SingleOrderPageC> {
                         OrderDetails(
                           orderItem: widget.orderItem,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text("Please rate your order!",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  letterSpacing: 1,
+                                )),
+                          ),
+                        ),
                         Center(
                           child: RatingBar.builder(
                             initialRating: widget.orderItem.ratingGiven!,

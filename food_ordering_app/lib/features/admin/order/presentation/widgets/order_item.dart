@@ -15,7 +15,9 @@ class OrderItem extends StatelessWidget {
       title: Row(
         children: [
           Image.network(
-            'https://www.pikpng.com/pngl/m/210-2108039_veg-logo-png-veg-symbol-clipart.png',
+            item.isVeg
+                ? 'https://www.pikpng.com/pngl/m/210-2108039_veg-logo-png-veg-symbol-clipart.png'
+                : "https://www.vhv.rs/dpng/d/437-4370761_non-veg-icon-non-veg-logo-png-transparent.png",
             width: 20,
             height: 20,
           ),
