@@ -97,7 +97,8 @@ class _MenuPageState extends State<MenuPage> {
                               price: item.price,
                               itemName: item.itemName,
                               isVeg: item.isVeg,
-                              isAvailable: item.isAvailable),
+                              isAvailable: item.isAvailable,
+                              description: item.description),
                         );
                       }),
                 );

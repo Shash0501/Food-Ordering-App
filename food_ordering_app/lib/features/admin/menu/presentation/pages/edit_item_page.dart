@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/bloc/menu_bloc.dart';
@@ -13,6 +14,7 @@ class EditItemPage extends StatefulWidget {
   String itemCategory;
   bool isVeg;
   bool isAvailable;
+  String description;
   EditItemPage(
       {Key? key,
       required this.restaurantId,
@@ -21,7 +23,8 @@ class EditItemPage extends StatefulWidget {
       required this.itemPrice,
       required this.itemCategory,
       required this.isVeg,
-      required this.isAvailable})
+      required this.isAvailable,
+      required this.description})
       : super(key: key);
 
   @override
@@ -32,6 +35,8 @@ class _EditItemPageState extends State<EditItemPage> {
   final items = ["Appetizers", "Deserts", "Main courses", "Starters"];
   final TextEditingController itemName = TextEditingController();
   final TextEditingController itemPrice = TextEditingController();
+  final TextEditingController description = TextEditingController();
+
   late bool veg = widget.isVeg;
   late bool available = widget.isAvailable;
   late String? category = widget.itemCategory;
@@ -71,7 +76,7 @@ class _EditItemPageState extends State<EditItemPage> {
                     category: category!,
                     isVeg: veg,
                     isAvailable: available,
-                    description: "Khana acha hai",
+                    description: description.text,
                     itemId: uuid,
                   ));
                 },
@@ -87,7 +92,12 @@ class _EditItemPageState extends State<EditItemPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       controller: itemName..text = widget.itemName,
-                      decoration: const InputDecoration(labelText: "Item Name"),
+                      decoration: InputDecoration(
+                        labelText: "Item Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -102,7 +112,31 @@ class _EditItemPageState extends State<EditItemPage> {
                     child: TextFormField(
                       controller: itemPrice..text = widget.itemPrice.toString(),
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Price"),
+                      decoration: InputDecoration(
+                        labelText: "Price",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: description..text = widget.description,
+                      decoration: InputDecoration(
+                        labelText: "Description",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {

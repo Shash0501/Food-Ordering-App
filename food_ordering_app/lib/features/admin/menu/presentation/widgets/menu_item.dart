@@ -9,6 +9,7 @@ class MenuItemCard extends StatefulWidget {
   final int price;
   final bool isVeg;
   final bool isAvailable;
+  final String description;
   MenuItemCard(
       {required this.restaurantId,
       required this.itemId,
@@ -16,7 +17,8 @@ class MenuItemCard extends StatefulWidget {
       required this.category,
       required this.price,
       required this.isVeg,
-      required this.isAvailable});
+      required this.isAvailable,
+      required this.description});
 
   @override
   State<MenuItemCard> createState() => _MenuItemCardState();
@@ -64,8 +66,8 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   ],
                 ),
                 // TODO add description
-                const Text(
-                  "This food is good",
+                Text(
+                  widget.description,
                   style: TextStyle(color: Colors.black, height: 1.5),
                 ),
                 const SizedBox(
@@ -100,13 +102,15 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => EditItemPage(
-                            restaurantId: widget.restaurantId,
-                            itemId: widget.itemId,
-                            itemName: widget.itemName,
-                            itemPrice: widget.price,
-                            itemCategory: widget.category,
-                            isVeg: widget.isVeg,
-                            isAvailable: widget.isAvailable)));
+                              restaurantId: widget.restaurantId,
+                              itemId: widget.itemId,
+                              itemName: widget.itemName,
+                              itemPrice: widget.price,
+                              itemCategory: widget.category,
+                              isVeg: widget.isVeg,
+                              isAvailable: widget.isAvailable,
+                              description: widget.description,
+                            )));
                   },
                   icon: const Icon(
                     Icons.edit,

@@ -17,7 +17,10 @@ class _AddItemPageState extends State<AddItemPage> {
   final items = ["Appetizers", "Deserts", "Main courses", "Starters"];
   final TextEditingController itemName = TextEditingController();
   final TextEditingController itemPrice = TextEditingController();
+  final TextEditingController description = TextEditingController();
+
   bool veg = true;
+
   bool available = true;
   // final TextEditingController item  = TextEditingController();
   // final TextEditingController itemName  = TextEditingController();
@@ -53,7 +56,7 @@ class _AddItemPageState extends State<AddItemPage> {
                     category: category!,
                     isVeg: veg,
                     isAvailable: available,
-                    description: "Khana acha hai",
+                    description: description.text,
                     itemId: uuid.v1(),
                   ));
                 },
@@ -97,6 +100,25 @@ class _AddItemPageState extends State<AddItemPage> {
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: "Price",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: description,
+                      decoration: InputDecoration(
+                        labelText: "Description",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
