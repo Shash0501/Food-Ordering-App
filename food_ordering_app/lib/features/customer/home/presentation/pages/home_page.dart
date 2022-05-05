@@ -44,13 +44,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         userId: FirebaseAuth.instance.currentUser!.email
                             .toString())));
               }),
-          FloatingActionButton(
-              heroTag: 2,
-              child: Icon(Icons.bakery_dining_rounded),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => CartPage()));
-              }),
         ],
       ),
       body: SingleChildScrollView(

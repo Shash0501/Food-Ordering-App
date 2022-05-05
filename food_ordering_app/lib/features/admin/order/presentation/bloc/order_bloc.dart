@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../menu/data/models/menuitem_model.dart';
@@ -15,6 +16,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderEvent>((event, emit) async {
       if (event is LoadOrders) {
         emit(Loading());
+
+        List<String> orderIds = [];
         go.GetOrders getOrders = go.GetOrders(
             OrderRepositoryImpl(remoteDataSource: OrderRemoteDataSourceImpl()));
         try {

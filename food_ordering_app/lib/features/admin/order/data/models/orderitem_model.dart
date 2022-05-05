@@ -44,7 +44,7 @@ class OrderItemModel extends OrderItem {
       orderId: json['orderId'],
       customerId: json['customerId'],
       restaurantId: json['restaurantId'],
-      orderDate: Timestamp.now(),
+      orderDate: json['orderDate'],
       totalAmount: json['totalAmount'].toDouble(),
       ratingGiven: json['ratingGiven'].toDouble(),
       status: json['status'],

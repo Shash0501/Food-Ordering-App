@@ -1,17 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/features/admin/order/presentation/pages/single_order_page.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/bloc/homepage_bloc.dart';
 
 import 'dart:developer' as developer;
 
 import '../../../../admin/order/data/models/orderitem_model.dart';
+import '../../../../admin/order/presentation/bloc/order_bloc.dart';
 import '../pages/single_order_page_customer.dart';
 
 // import '../../data/models/orderitem_model.dart';
 
 class OrderCardC extends StatefulWidget {
   OrderItemModel order;
-  OrderCardC({Key? key, required this.order}) : super(key: key);
+  List<String> orderIds;
+  OrderCardC({Key? key, required this.order, required this.orderIds})
+      : super(key: key);
 
   @override
   State<OrderCardC> createState() => _OrderCardState();
@@ -31,6 +36,15 @@ class _OrderCardState extends State<OrderCardC> {
     totalAmount = 365.3;
     orderStatus = orderListing.status;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    print("runnig dispose");
+    BlocProvider.of<OrderBloc>(context)
+        .add(LoadOrders(orderIds: widget.orderIds));
+
+    super.dispose();
   }
 
   @override

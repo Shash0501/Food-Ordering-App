@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/features/customer/home/presentation/pages/order_history_page.dart';
 
 import '../../data/models/orderitem_model.dart';
 import '../pages/single_order_page.dart';
@@ -63,7 +65,7 @@ class _OrderCardState extends State<OrderCard> {
                 children: [
                   Expanded(child: Text('ID: ${orderListing.orderId}')),
                   Text(
-                      '${orderListing.orderDate.toDate().hour}:${orderListing.orderDate.toDate().minute} PM')
+                      '${orderListing.orderDate.toDate().toString().substring(0, 16)}'),
                 ],
               ),
             ),
@@ -169,14 +171,14 @@ class _OrderCardState extends State<OrderCard> {
                   visualDensity: VisualDensity(vertical: -4),
                   contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   title: Text(
-                      '${orderItem['quantity']} x ${orderItem['itemId'].substring(1, 4)}',
+                      '${orderItem['quantity']} x ${orderItem['itemName']}',
                       style: TextStyle(letterSpacing: 2)),
                 );
               }),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              'Total Bill: $totalAmount',
+              'Total Bill: ${1.38 * widget.order.totalAmount}',
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 20,
@@ -197,6 +199,13 @@ class _OrderCardState extends State<OrderCard> {
                         .update({'status': 'Accepted'})
                         .then((value) => print("Yay"))
                         .catchError((e) => print(e));
+
+                    // Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => OrderHistoryPage(
+                    //             userId: FirebaseAuth.instance.currentUser!.email
+                    //                 .toString())));
                   },
                   child: Text('ACCEPT', style: TextStyle(letterSpacing: 1.5)),
                 ),

@@ -63,7 +63,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                   itemCount: state.orders.length,
                   itemBuilder: (context, index) {
                     print(index);
-                    return OrderCardC(order: state.orders[index]);
+                    return OrderCardC(
+                      order: state.orders[index],
+                      orderIds: orderIds,
+                    );
                   });
             } else {
               // WidgetsBinding.instance!.addPostFrameCallback((_) {
