@@ -23,8 +23,11 @@ class RestaurantCard extends StatelessWidget {
           ),
           child: ListTile(
             contentPadding: EdgeInsets.all(0),
-            title: Image.asset(
-              'assets/images/profile.jpg',
+            title: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                'assets/images/profile.jpg',
+              ),
             ),
             subtitle: Padding(
               padding: const EdgeInsets.all(10.0),
