@@ -70,7 +70,7 @@ class _OrderCardState extends State<OrderCardC> {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => SingleOrderPageC(
                         orderItem: orderListing,
                       )));

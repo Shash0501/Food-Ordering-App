@@ -24,6 +24,9 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   var uuid = Uuid();
+
+  TextEditingController addressController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
   var isFinished = false;
   @override
   Widget build(BuildContext context) {
@@ -134,7 +137,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 height: 10,
                 color: Colors.transparent,
               ),
-              UserDetails(),
+              UserDetails(
+                addressController: addressController,
+                pincodeController: pincodeController,
+              ),
               Center(
                 child: SwipeableButtonView(
                   buttonText: "SLIDE TO CONFIRM",
@@ -166,11 +172,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         restaurantId: restaurantId,
                         orderDate: Timestamp.now(),
                         totalAmount: totalAmount(),
-                        ratingGiven: 2,
+                        ratingGiven: 0,
                         status: "Pending",
                         order: getOrderList(),
-                        pincode: 314122,
-                        address: "Abhi Daala Just");
+                        pincode: int.parse(pincodeController.text),
+                        address: addressController.text);
 
                     BlocProvider.of<HomepageBloc>(context)
                         .add(PlaceOrderEvent(order: order));
@@ -189,7 +195,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
 }
 
 class UserDetails extends StatefulWidget {
-  const UserDetails({Key? key}) : super(key: key);
+  TextEditingController addressController;
+  TextEditingController pincodeController;
+  UserDetails(
+      {Key? key,
+      required this.addressController,
+      required this.pincodeController})
+      : super(key: key);
 
   @override
   State<UserDetails> createState() => _UserDetailsState();
@@ -238,6 +250,7 @@ class _UserDetailsState extends State<UserDetails> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            controller: widget.addressController,
             decoration: const InputDecoration(labelText: "Address"),
             // The validator receives the text that the user has entered.
             validator: (value) {
@@ -251,6 +264,8 @@ class _UserDetailsState extends State<UserDetails> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            controller: widget.pincodeController,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(labelText: "Pincode"),
             // The validator receives the text that the user has entered.
             validator: (value) {

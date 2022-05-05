@@ -237,8 +237,6 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                                   } else {
                                     return Container();
                                   }
-                                } else {
-                                  return Container();
                                 }
                               });
                         });
