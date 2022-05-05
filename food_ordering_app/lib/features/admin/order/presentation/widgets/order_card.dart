@@ -80,6 +80,8 @@ class _OrderCardState extends State<OrderCard> {
                     setState(() {
                       print(orderStatus);
                       orderStatus = newValue!;
+                      print(orderStatus);
+
                       FirebaseFirestore.instance
                           .collection('orders')
                           .doc(widget.order.orderId)
