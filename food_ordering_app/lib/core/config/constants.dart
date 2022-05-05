@@ -1,1 +1,2 @@
-List<String> categories = ["Appetizers", "Starters", "Desserts", "Main Course"];
+List<String> categories = ["All","Appetizers", "Starters", "Desserts", "Main Course"];
+
