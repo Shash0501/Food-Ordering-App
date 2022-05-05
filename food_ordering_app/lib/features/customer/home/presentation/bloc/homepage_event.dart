@@ -37,3 +37,12 @@ class PlaceOrderEvent extends HomepageEvent {
   @override
   List<Object> get props => [order];
 }
+
+
+class LoadProfile extends HomepageEvent{
+  final String userId;
+  const LoadProfile({required this.userId});
+  @override
+  List<Object> get props => [userId];
+  
+}

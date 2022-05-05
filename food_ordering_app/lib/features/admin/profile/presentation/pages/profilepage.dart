@@ -62,12 +62,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, state) {
-        if (state is Loading) {
-          return Center(child: CircularProgressIndicator());
-        } else if (state is ProfileLoaded) {
-          return Scaffold(
+    return Scaffold(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          if (state is Loading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is ProfileLoaded) {
+            return Scaffold(
               body: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -106,6 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.fromLTRB(8.0, 140, 8.0, 0),
                     child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
@@ -148,49 +150,52 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              bottomSheet: TextButton(
-                  onPressed: !hasEdited
-                      ? null
-                      : () {
-                          FirebaseFirestore.instance
-                              .collection("restaurants")
-                              .doc(widget.restaurantId)
-                              .update({
-                            "restaurantName": name.text == ""
-                                ? state.profile.restaurantName
-                                : name.text,
-                            "address": address.text == ""
-                                ? state.profile.address
-                                : address.text,
-                            "email": email.text == ""
-                                ? state.profile.email
-                                : email.text,
-                            "phone": phone.text == ""
-                                ? state.profile.phone
-                                : phone.text,
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Profile Updated"),
-                            duration: Duration(seconds: 1),
-                          ));
-                          setState(() {
-                            name.text = "";
-                            address.text = "";
-                            email.text = "";
-                            phone.text = "";
-                            hasEdited = false;
-                            BlocProvider.of<ProfileBloc>(context)
-                                // ignore: invalid_use_of_visible_for_testing_member
-                                .emit(Loading());
-                            BlocProvider.of<ProfileBloc>(context).add(
-                                LoadProfile(restaurantId: widget.restaurantId));
-                          });
-                        },
-                  child: Text("SAVE")));
-        }
-        return Container();
-      },
-    ));
+              bottomSheet: ElevatedButton(
+                onPressed: !hasEdited
+                    ? null
+                    : () {
+                        FirebaseFirestore.instance
+                            .collection("restaurants")
+                            .doc(widget.restaurantId)
+                            .update({
+                          "restaurantName": name.text == ""
+                              ? state.profile.restaurantName
+                              : name.text,
+                          "address": address.text == ""
+                              ? state.profile.address
+                              : address.text,
+                          "email": email.text == ""
+                              ? state.profile.email
+                              : email.text,
+                          "phone": phone.text == ""
+                              ? state.profile.phone
+                              : phone.text,
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Profile Updated"),
+                          duration: Duration(seconds: 1),
+                        ));
+                        setState(() {
+                          name.text = "";
+                          address.text = "";
+                          email.text = "";
+                          phone.text = "";
+                          hasEdited = false;
+                          BlocProvider.of<ProfileBloc>(context)
+                              // ignore: invalid_use_of_visible_for_testing_member
+                              .emit(Loading());
+                          BlocProvider.of<ProfileBloc>(context).add(
+                              LoadProfile(restaurantId: widget.restaurantId));
+                        });
+                      },
+                child: Text("SAVE"),
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
+    );
   }
 }
 
