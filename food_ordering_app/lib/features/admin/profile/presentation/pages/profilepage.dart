@@ -152,9 +152,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               bottomSheet: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 160,
-                ),
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width / 2, 0, 0, 0),
                 child: ElevatedButton(
                   onPressed: !hasEdited
                       ? null

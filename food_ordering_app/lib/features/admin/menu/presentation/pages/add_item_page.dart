@@ -43,9 +43,9 @@ class _AddItemPageState extends State<AddItemPage> {
             backgroundColor: Colors.redAccent,
             title: const Text("Add Item"),
             actions: [
-              InkWell(
-                child: Text("Add Item"),
-                onTap: () {
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
                   BlocProvider.of<MenuBloc>(context).add(AddItem(
                     restaurantId: widget.restaurantId,
                     itemName: itemName.text,
@@ -66,10 +66,18 @@ class _AddItemPageState extends State<AddItemPage> {
                   child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 10,
+                    ),
                     child: TextFormField(
                       controller: itemName,
-                      decoration: const InputDecoration(labelText: "Item Name"),
+                      decoration: InputDecoration(
+                        labelText: "Item Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -80,11 +88,19 @@ class _AddItemPageState extends State<AddItemPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 10,
+                    ),
                     child: TextFormField(
                       controller: itemPrice,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Price"),
+                      decoration: InputDecoration(
+                        labelText: "Price",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -118,7 +134,7 @@ class _AddItemPageState extends State<AddItemPage> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 130.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 100.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -140,7 +156,7 @@ class _AddItemPageState extends State<AddItemPage> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 130),
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -173,6 +189,8 @@ class _AddItemPageState extends State<AddItemPage> {
       value: item,
       child: Text(
         item,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        style: TextStyle(
+          fontSize: 20,
+        ),
       ));
 }
