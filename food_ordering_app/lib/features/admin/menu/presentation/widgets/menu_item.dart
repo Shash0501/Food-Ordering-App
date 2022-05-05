@@ -74,9 +74,9 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 Row(
                   children: [
                     const Text(
-                      "\$",
+                      "\₹",
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),

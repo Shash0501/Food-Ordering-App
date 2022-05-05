@@ -69,6 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
             return Center(child: CircularProgressIndicator());
           } else if (state is ProfileLoaded) {
             return Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -150,45 +151,50 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              bottomSheet: ElevatedButton(
-                onPressed: !hasEdited
-                    ? null
-                    : () {
-                        FirebaseFirestore.instance
-                            .collection("restaurants")
-                            .doc(widget.restaurantId)
-                            .update({
-                          "restaurantName": name.text == ""
-                              ? state.profile.restaurantName
-                              : name.text,
-                          "address": address.text == ""
-                              ? state.profile.address
-                              : address.text,
-                          "email": email.text == ""
-                              ? state.profile.email
-                              : email.text,
-                          "phone": phone.text == ""
-                              ? state.profile.phone
-                              : phone.text,
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Profile Updated"),
-                          duration: Duration(seconds: 1),
-                        ));
-                        setState(() {
-                          name.text = "";
-                          address.text = "";
-                          email.text = "";
-                          phone.text = "";
-                          hasEdited = false;
-                          BlocProvider.of<ProfileBloc>(context)
-                              // ignore: invalid_use_of_visible_for_testing_member
-                              .emit(Loading());
-                          BlocProvider.of<ProfileBloc>(context).add(
-                              LoadProfile(restaurantId: widget.restaurantId));
-                        });
-                      },
-                child: Text("SAVE"),
+              bottomSheet: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 160,
+                ),
+                child: ElevatedButton(
+                  onPressed: !hasEdited
+                      ? null
+                      : () {
+                          FirebaseFirestore.instance
+                              .collection("restaurants")
+                              .doc(widget.restaurantId)
+                              .update({
+                            "restaurantName": name.text == ""
+                                ? state.profile.restaurantName
+                                : name.text,
+                            "address": address.text == ""
+                                ? state.profile.address
+                                : address.text,
+                            "email": email.text == ""
+                                ? state.profile.email
+                                : email.text,
+                            "phone": phone.text == ""
+                                ? state.profile.phone
+                                : phone.text,
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Profile Updated"),
+                            duration: Duration(seconds: 1),
+                          ));
+                          setState(() {
+                            name.text = "";
+                            address.text = "";
+                            email.text = "";
+                            phone.text = "";
+                            hasEdited = false;
+                            BlocProvider.of<ProfileBloc>(context)
+                                // ignore: invalid_use_of_visible_for_testing_member
+                                .emit(Loading());
+                            BlocProvider.of<ProfileBloc>(context).add(
+                                LoadProfile(restaurantId: widget.restaurantId));
+                          });
+                        },
+                  child: Text("SAVE"),
+                ),
               ),
             );
           }
