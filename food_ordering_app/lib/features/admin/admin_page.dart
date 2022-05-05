@@ -27,6 +27,7 @@ class _MyAdminPageState extends State<MyAdminPage> {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async {
+                print("adsdasd");
                 final googleSignIn = GoogleSignIn();
                 await googleSignIn.disconnect();
                 FirebaseAuth.instance.signOut();

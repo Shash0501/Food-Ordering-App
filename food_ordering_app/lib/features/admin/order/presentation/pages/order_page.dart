@@ -51,9 +51,28 @@ class _OrderPageState extends State<OrderPage> {
                 return OrderCard(order: state.orders[index]);
               });
         } else if (state is Loading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
-          return Center(child: Text("No Orders"));
+          print("dad");
+          WidgetsBinding.instance!.addPostFrameCallback((a) {
+            print("Add");
+            List<String> orderIds = [];
+            FirebaseFirestore.instance
+                .collection("restaurants")
+                .doc(widget.restaurantId)
+                .collection("orders")
+                .get()
+                .then((snapshot) {
+              snapshot.docs.forEach((doc) {
+                orderIds.add(doc.id.trim());
+              });
+              BlocProvider.of<OrderBloc>(context).emit(Loading());
+
+              BlocProvider.of<OrderBloc>(context)
+                  .add(LoadOrders(orderIds: orderIds));
+            });
+          });
+          return const Center(child: Text("No Orders"));
         }
       },
     ));

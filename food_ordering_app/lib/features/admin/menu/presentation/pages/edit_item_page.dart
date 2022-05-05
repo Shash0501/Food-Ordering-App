@@ -6,6 +6,10 @@ import 'package:googleapis/transcoder/v1.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:math';
 
+import '../../../admin_page.dart';
+import '../../../order/presentation/pages/order_page.dart';
+import 'menu_page.dart';
+
 class EditItemPage extends StatefulWidget {
   String restaurantId;
   String itemId;
@@ -52,169 +56,180 @@ class _EditItemPageState extends State<EditItemPage> {
     return BlocConsumer<MenuBloc, MenuState>(
       listener: (context, state) {
         if (state is ItemEdited) {
-          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) =>
+                  MyAdminPage(restaurantId: widget.restaurantId)));
         }
       },
       builder: (context, state) {
         if (state is Loading) {
-          return Center(child: CircularProgressIndicator());
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
         }
-        return Scaffold(
-          appBar: AppBar(
-            title: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text("Edit Item"),
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.save),
-                onPressed: () {
-                  BlocProvider.of<MenuBloc>(context).add(EditItem(
-                    restaurantId: widget.restaurantId,
-                    itemName: itemName.text,
-                    price: int.parse(itemPrice.text),
-                    category: category!,
-                    isVeg: veg,
-                    isAvailable: available,
-                    description: description.text,
-                    itemId: uuid,
-                  ));
-                },
+        return WillPopScope(
+          onWillPop: () async {
+            await Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    MyAdminPage(restaurantId: widget.restaurantId)));
+            return false;
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text("Edit Item"),
               ),
-            ],
-          ),
-          body: Column(
-            children: [
-              Form(
-                  child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: itemName..text = widget.itemName,
-                      decoration: InputDecoration(
-                        labelText: "Item Name",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () {
+                    BlocProvider.of<MenuBloc>(context).add(EditItem(
+                      restaurantId: widget.restaurantId,
+                      itemName: itemName.text,
+                      price: int.parse(itemPrice.text),
+                      category: category!,
+                      isVeg: veg,
+                      isAvailable: available,
+                      description: description.text,
+                      itemId: uuid,
+                    ));
+                  },
+                ),
+              ],
+            ),
+            body: Column(
+              children: [
+                Form(
+                    child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: itemName..text = widget.itemName,
+                        decoration: InputDecoration(
+                          labelText: "Item Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
+                        // The validator receives the text that the user has entered.
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
                       ),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: itemPrice
+                          ..text = widget.itemPrice.toString(),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: "Price",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        // The validator receives the text that the user has entered.
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: description..text = widget.description,
+                        decoration: InputDecoration(
+                          labelText: "Description",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        // The validator receives the text that the user has entered.
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                )),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.black, width: 4),
+                    ),
+                    child: DropdownButton<String>(
+                      value: category,
+                      items: items.map(buildMenuItem).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          category = value;
+                        });
                       },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: itemPrice..text = widget.itemPrice.toString(),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: "Price",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: description..text = widget.description,
-                      decoration: InputDecoration(
-                        labelText: "Description",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black, width: 4),
-                  ),
-                  child: DropdownButton<String>(
-                    value: category,
-                    items: items.map(buildMenuItem).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        category = value;
-                      });
-                    },
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text((veg) ? "Veg" : "Non-Veg"),
-                        Switch(
-                          activeColor: Colors.green,
-                          inactiveThumbColor: Colors.red,
-                          inactiveTrackColor: Colors.red,
-                          value: veg,
-                          onChanged: (value) {
-                            setState(() {
-                              veg = !veg;
-                            });
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text((available) ? "Available" : "Unavailable"),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Switch(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text((veg) ? "Veg" : "Non-Veg"),
+                          Switch(
                             activeColor: Colors.green,
                             inactiveThumbColor: Colors.red,
                             inactiveTrackColor: Colors.red,
-                            value: available,
+                            value: veg,
                             onChanged: (value) {
                               setState(() {
-                                available = !available;
+                                veg = !veg;
                               });
                             },
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ],
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text((available) ? "Available" : "Unavailable"),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Switch(
+                              activeColor: Colors.green,
+                              inactiveThumbColor: Colors.red,
+                              inactiveTrackColor: Colors.red,
+                              value: available,
+                              onChanged: (value) {
+                                setState(() {
+                                  available = !available;
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
