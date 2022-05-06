@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/features/admin/menu/presentation/pages/edit_item_page.dart';
+import 'dart:math';
 
 class MenuItemCard extends StatefulWidget {
   final String restaurantId;
@@ -25,8 +26,11 @@ class MenuItemCard extends StatefulWidget {
 }
 
 class _MenuItemCardState extends State<MenuItemCard> {
+  get url => null;
+
   @override
   Widget build(BuildContext context) {
+    Random r = Random();
     return Container(
       height: 110,
       decoration: BoxDecoration(
@@ -41,8 +45,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 padding: const EdgeInsets.all(5),
                 width: 110,
                 height: 110,
-                child: Image.asset('assets/images/chicken.jpg',
-                    fit: BoxFit.fitHeight),
+                child: Image.network((url[r.nextInt(url.length)])),
               ),
             ],
           ),
