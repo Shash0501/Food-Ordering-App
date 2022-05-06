@@ -38,7 +38,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         children: [
           FloatingActionButton(
               heroTag: 1,
-              child: Icon(Icons.hail),
+              child: Icon(Icons.history),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => OrderHistoryPage(

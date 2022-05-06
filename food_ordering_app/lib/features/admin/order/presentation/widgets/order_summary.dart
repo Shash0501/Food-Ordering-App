@@ -34,7 +34,7 @@ class OrderSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalItemPrice = calculateTotal();
-    final promoDiscount = 0;
+    final promoDiscount = 100;
     final tax = 0.18 * totalItemPrice;
     final deliveryCharge = 0.20 * totalItemPrice;
 

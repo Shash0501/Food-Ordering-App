@@ -48,7 +48,7 @@ class _OrderPageState extends State<OrderPage> {
           return ListView.builder(
               itemCount: state.orders.length,
               itemBuilder: (context, index) {
-                return OrderCard(order: state.orders[index]);
+                return OrderCard(order: state.orders[index], restaurantId: widget.restaurantId,);
               });
         } else if (state is Loading) {
           return const Center(child: CircularProgressIndicator());

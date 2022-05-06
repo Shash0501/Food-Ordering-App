@@ -47,6 +47,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.redAccent,
           title: Text("Order History"),
         ),
         body: BlocConsumer<OrderBloc, OrderState>(
