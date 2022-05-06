@@ -79,7 +79,9 @@ class _OrderCardState extends State<OrderCardC> {
               padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
               child: Row(
                 children: [
-                  Expanded(child: Text('ID: ${orderListing.orderId}')),
+                  Expanded(
+                      child:
+                          Text('ID: ${orderListing.orderId.substring(0, 8)}')),
                   Text(
                       '${orderListing.orderDate.toDate().toString().substring(0, 19)}')
                 ],
