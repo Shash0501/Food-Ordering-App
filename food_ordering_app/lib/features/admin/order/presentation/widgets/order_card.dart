@@ -3,14 +3,17 @@ import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/features/admin/order/presentation/pages/order_page.dart';
 import 'package:food_ordering_app/features/customer/home/presentation/pages/order_history_page.dart';
 
 import '../../data/models/orderitem_model.dart';
 import '../pages/single_order_page.dart';
 
 class OrderCard extends StatefulWidget {
+  String restaurantId;
   OrderItemModel order;
-  OrderCard({Key? key, required this.order}) : super(key: key);
+  OrderCard({Key? key, required this.order, required this.restaurantId})
+      : super(key: key);
 
   @override
   State<OrderCard> createState() => _OrderCardState();
@@ -64,7 +67,9 @@ class _OrderCardState extends State<OrderCard> {
               padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
               child: Row(
                 children: [
-                  Expanded(child: Text('ID: ${orderListing.orderId}')),
+                  Expanded(
+                      child:
+                          Text('ID: ${orderListing.orderId.substring(0, 8)}')),
                   Text(
                       '${orderListing.orderDate.toDate().toString().substring(0, 16)}'),
                 ],
@@ -86,6 +91,13 @@ class _OrderCardState extends State<OrderCard> {
                           .collection('orders')
                           .doc(widget.order.orderId)
                           .update({'status': newValue});
+
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OrderPage(
+                                    restaurantId: widget.restaurantId,
+                                  )));
                     });
                   },
                   items: dropDownorderStatusColors.keys
@@ -206,12 +218,12 @@ class _OrderCardState extends State<OrderCard> {
                         .then((value) => print("Yay"))
                         .catchError((e) => print(e));
 
-                    // Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => OrderHistoryPage(
-                    //             userId: FirebaseAuth.instance.currentUser!.email
-                    //                 .toString())));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderPage(
+                                  restaurantId: widget.restaurantId,
+                                )));
                   },
                   child: Text('ACCEPT', style: TextStyle(letterSpacing: 1.5)),
                 ),

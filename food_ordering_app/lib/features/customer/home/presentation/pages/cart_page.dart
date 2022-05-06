@@ -27,35 +27,8 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.redAccent,
         title: const Text('Your Cart'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.airplane_ticket),
-            onPressed: () {
-              var box = Hive.box<CurrentOrder>("currentOrder");
-              List<dynamic> itemIds =
-                  Hive.box<CurrentOrder>("currentOrder").keys.toList();
-              String restaurantId = box.get(itemIds[0])!.restaurantId;
-
-              OrderItemModel order = OrderItemModel(
-                  orderId: uuid.v1(),
-                  customerId:
-                      FirebaseAuth.instance.currentUser!.email.toString(),
-                  restaurantId: restaurantId,
-                  orderDate: Timestamp.now(),
-                  totalAmount: totalAmount(),
-                  ratingGiven: 2,
-                  status: "Pending",
-                  order: getOrderList(),
-                  pincode: 314122,
-                  address: "asdasdasd asdvhv a jsvdj hasdjb");
-
-              BlocProvider.of<HomepageBloc>(context)
-                  .add(PlaceOrderEvent(order: order));
-              box.clear();
-            },
-          ),
-        ],
       ),
       body: ValueListenableBuilder<Box>(
           valueListenable: Hive.box<CurrentOrder>("currentOrder").listenable(),

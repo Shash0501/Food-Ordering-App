@@ -74,6 +74,7 @@ class _EditItemPageState extends State<EditItemPage> {
           },
           child: Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.redAccent,
               title: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Edit Item"),
